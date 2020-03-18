@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Spaceport
@@ -28,7 +29,8 @@ namespace Spaceport
 
         public ParkingSession FindFreeSpot()
         {
-
+            ParkingSpot = SpacePort.FreeParkingSpot(SpaceShip.Length);
+            return this;
         }
 
         public bool SessionIsValid(DateTime currentTime)

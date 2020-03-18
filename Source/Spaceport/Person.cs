@@ -9,6 +9,6 @@ namespace Spaceport
         public int PersonId { get; set; }
         public string Name { get; set; }
         public List<String> Films { get; set; }
-        public List<ISpaceship> Spaceships { get; set; }
+        public List<ISpaceShip> SpaceShips { get; set; }
     }
 }
