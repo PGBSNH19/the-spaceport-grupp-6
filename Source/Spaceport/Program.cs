@@ -6,7 +6,12 @@ namespace Spaceport
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var spacePort = new SpacePort();
+            var ship = new StarShip();
+            var parkingSession = new ParkingSession()
+                .SetForShip(ship)
+                .AtSpacePort(port)
+                .FindFreeSpot()
         }
     }
 }

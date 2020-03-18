@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Spaceport
 {
-    public class Parkingspot
+    public class ParkingSpot
     {
-        public int ParkingspotId { get; set; }
+        public int ParkingSpotID { get; set; }
         public int MaxLength { get; set; }
     }
 }

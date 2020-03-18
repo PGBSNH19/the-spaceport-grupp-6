@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Spaceport
 {
-    public class Spaceport
+    public class SpacePort
     {
-        public int SpaceportId { get; set; }
+        public int SpacePortID { get; set; }
         public string Name { get; set; }
-        public List<Parkingspot> Parkingspots { get; set; }
+        public List<ParkingSpot> ParkingSpots { get; set; }
     }
 }

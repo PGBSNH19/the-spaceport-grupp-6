@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Spaceport
 {
-    public interface ISpaceship
+    public interface ISpaceShip
     {
-        public int SpaceshipId { get; set; }
+        public int SpaceShipID { get; set; }
         public int Name { get; set; }
-        public Person Person { get; set; }
+        public Person Driver { get; set; }
         public int Length { get; set; }
     }
 }
