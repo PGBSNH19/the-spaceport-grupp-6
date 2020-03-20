@@ -13,7 +13,7 @@ namespace Spaceport
                 .SetForShip(bigShip)
                 .AtSpacePort(coruscantSpacePort)
                 .FindFreeSpot()
-                .ValidateParkingRight() ;
+                .ValidateParkingRight();
 
             Console.WriteLine(parkingSession.SpacePort.Name);
             Console.WriteLine(parkingSession.ParkingSpot.ParkingSpotID);

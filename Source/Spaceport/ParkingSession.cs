@@ -22,7 +22,10 @@ namespace Spaceport
         }
         public ParkingSession  ValidateParkingRight()
         {
-            this.SpaceShip.Driver.IsPartOfStarwars();
+            if (!this.SpaceShip.Driver.IsPartOfStarwars())
+            {
+                throw new NotImplementedException();
+            }
             return this;
         }
 
