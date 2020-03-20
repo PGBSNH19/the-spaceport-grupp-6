@@ -12,11 +12,11 @@ namespace Spaceport
 
         public bool IsPartOfStarwars()
         {
-            var client = new RestClient("https://swapi.co/api/people/");
-            var request = new RestRequest("?search=Luke+Sky", DataFormat.Json);
-            var peopleResponse = client.Get<StarwarsAPIResponse>(request);
+            //var client = new RestClient("https://swapi.co/api/people/");
+            //var request = new RestRequest("?search=Luke+Sky", DataFormat.Json);
+            //var peopleResponse = client.Get<StarwarsAPIResponse>(request);
 
-            Console.WriteLine("API: " + peopleResponse.Content);
+            //Console.WriteLine("API: " + peopleResponse.Content);
 
             return true;
         }

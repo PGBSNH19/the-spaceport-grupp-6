@@ -1,33 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Data.SqlClient;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
 
 namespace Spaceport
 {
     public class ParkingSession
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ParkingSessionID { get; set; }
         public ParkingSpot ParkingSpot { get; set; }
-        [NotMapped]
         public ISpaceShip SpaceShip { get; set; }
         public SpacePort SpacePort { get; set; }
         public bool ParkingToken { get; set; }
         public DateTime RegistrationTime { get; set; }
-        public DateTime ValidUntil { get; set; }
 
         public ParkingSession SetForShip(ISpaceShip ship)
         {
             SpaceShip = ship;
             return this;
         }
+
         public ParkingSession  ValidateParkingRight()
         {
-            if (!this.SpaceShip.Driver.IsPartOfStarwars())
-            {
-                throw new NotImplementedException();
-            }
+            ParkingToken = this.SpaceShip.Driver.IsPartOfStarwars();
             return this;
         }
 
@@ -43,9 +40,54 @@ namespace Spaceport
             return this;
         }
 
-        public bool SessionIsValid(DateTime currentTime)
+        public ParkingSession StartParkingSession()
         {
-            return currentTime > ValidUntil;
+            RegistrationTime = DateTime.Now;
+            using (SqlConnection conn = new SqlConnection(Program.CONNECTION_STRING))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("insert into ParkingSessions(ParkingSpotID, SpaceShipID, SpacePortID, ParkingToken, RegistrationTime) values (@ParkingSpotID, @SpaceShipID, @SpacePortID, @ParkingToken, @RegistrationTime)", conn);
+                SqlParameter paramParkingSpotID = new SqlParameter
+                {
+                    ParameterName = "@ParkingSpotID",
+                    Value = this.ParkingSpot.ParkingSpotID
+                };
+                cmd.Parameters.Add(paramParkingSpotID);
+                SqlParameter paramSpaceShipID = new SqlParameter
+                {
+                    ParameterName = "@SpaceShipID",
+                    Value = this.SpaceShip.SpaceShipID
+                };
+                cmd.Parameters.Add(paramSpaceShipID);
+                SqlParameter paramSpacePortID = new SqlParameter
+                {
+                    ParameterName = "@SpacePortID",
+                    Value = this.SpacePort.SpacePortID
+                };
+                cmd.Parameters.Add(paramSpacePortID);
+                SqlParameter paramParkingToken = new SqlParameter
+                {
+                    ParameterName = "@ParkingToken",
+                    Value = this.ParkingToken
+                };
+                cmd.Parameters.Add(paramParkingToken);
+                SqlParameter paramRegistrationTime = new SqlParameter
+                {
+                    ParameterName = "@RegistrationTime",
+                    Value = this.RegistrationTime
+                };
+                cmd.Parameters.Add(paramRegistrationTime);
+                try
+                {
+                    cmd.ExecuteScalar();
+                    Console.WriteLine("ParkingSession added!");
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine("Unable to add ParkingSession");
+                }
+            }
+            return this;
         }
     }
 }

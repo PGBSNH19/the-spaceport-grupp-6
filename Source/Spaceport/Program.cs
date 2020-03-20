@@ -4,6 +4,7 @@ namespace Spaceport
 {
     class Program
     {
+        public const string CONNECTION_STRING = @"Server=den1.mssql7.gear.host;Database=spaceport;Uid=spaceport;Pwd=Zm0~!8U6r493;";
         static void Main(string[] args)
         {
             var coruscantSpacePort = new SpacePort("Coruscant");
@@ -13,7 +14,8 @@ namespace Spaceport
                 .SetForShip(bigShip)
                 .AtSpacePort(coruscantSpacePort)
                 .FindFreeSpot()
-                .ValidateParkingRight();
+                .ValidateParkingRight()
+                .StartParkingSession();
 
             Console.ReadLine();
         }
