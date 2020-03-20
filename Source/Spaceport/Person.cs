@@ -10,5 +10,10 @@ namespace Spaceport
         public string Name { get; set; }
         public List<String> Films { get; set; }
         public List<ISpaceShip> SpaceShips { get; set; }
+
+        internal void IsPartOfStarwars()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

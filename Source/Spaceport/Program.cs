@@ -7,11 +7,13 @@ namespace Spaceport
         static void Main(string[] args)
         {
             var coruscantSpacePort = new SpacePort("Coruscant");
-            var bigShip = new StarShip() { Length = 50 };
+            var bigShipDriver = new Person() { Name = "Luke Skywalker"  };
+            var bigShip = new StarShip() { Length = 50 , Driver=bigShipDriver};
             var parkingSession = new ParkingSession()
                 .SetForShip(bigShip)
                 .AtSpacePort(coruscantSpacePort)
-                .FindFreeSpot();
+                .FindFreeSpot()
+                .ValidateParkingRight() ;
 
             Console.WriteLine(parkingSession.SpacePort.Name);
             Console.WriteLine(parkingSession.ParkingSpot.ParkingSpotID);

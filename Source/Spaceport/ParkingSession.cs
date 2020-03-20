@@ -11,13 +11,18 @@ namespace Spaceport
         public ParkingSpot ParkingSpot { get; set; }
         public ISpaceShip SpaceShip { get; set; }
         public SpacePort SpacePort { get; set; }
-        public bool Token { get; set; }
+        public bool ParkingToken { get; set; }
         public DateTime RegistrationTime { get; set; }
         public DateTime ValidUntil { get; set; }
 
         public ParkingSession SetForShip(ISpaceShip ship)
         {
             SpaceShip = ship;
+            return this;
+        }
+        public ParkingSession  ValidateParkingRight()
+        {
+            this.SpaceShip.Driver.IsPartOfStarwars();
             return this;
         }
 
