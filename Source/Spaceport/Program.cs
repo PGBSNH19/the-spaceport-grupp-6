@@ -15,9 +15,6 @@ namespace Spaceport
                 .FindFreeSpot()
                 .ValidateParkingRight();
 
-            Console.WriteLine(parkingSession.SpacePort.Name);
-            Console.WriteLine(parkingSession.ParkingSpot.ParkingSpotID);
-
             Console.ReadLine();
         }
     }

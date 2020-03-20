@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 
@@ -9,6 +10,7 @@ namespace Spaceport
     {
         public int ParkingSessionID { get; set; }
         public ParkingSpot ParkingSpot { get; set; }
+        [NotMapped]
         public ISpaceShip SpaceShip { get; set; }
         public SpacePort SpacePort { get; set; }
         public bool ParkingToken { get; set; }

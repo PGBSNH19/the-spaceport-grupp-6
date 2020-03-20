@@ -7,10 +7,8 @@ namespace Spaceport
 {
     public class Person
     {
-        public int PersonId { get; set; }
+        public int PersonID { get; set; }
         public string Name { get; set; }
-        public List<String> Films { get; set; }
-        public List<ISpaceShip> SpaceShips { get; set; }
 
         public bool IsPartOfStarwars()
         {
