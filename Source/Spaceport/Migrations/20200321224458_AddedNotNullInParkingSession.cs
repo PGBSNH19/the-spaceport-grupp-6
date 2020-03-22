@@ -2,7 +2,7 @@
 
 namespace Spaceport.Migrations
 {
-    public partial class ParkingSession_autoincrement : Migration
+    public partial class AddedNotNullInParkingSession : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -1,41 +1,56 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Spaceport
 {
     public class SpacePort
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SpacePortID { get; set; }
         public string Name { get; set; }
-        public List<ParkingSpot> ParkingSpots { get; set; }
 
-        private static int _amountSpaceSports = 0;
-
-        public SpacePort(string name)
+        public SpacePort()
         {
-            // Tillfällig
-            ParkingSpots = new List<ParkingSpot>
-            {
-                new ParkingSpot() {MaxLength = 20, ParkingSpotID = 1},
-                new ParkingSpot() {MaxLength = 30, ParkingSpotID = 2},
-                new ParkingSpot() {MaxLength = 40, ParkingSpotID = 3},
-                new ParkingSpot() {MaxLength = 50, ParkingSpotID = 4},
-                new ParkingSpot() {MaxLength = 60, ParkingSpotID = 5}
-            };
 
-            _amountSpaceSports++;
-            SpacePortID = _amountSpaceSports;
-            Name = name;
         }
 
-        public ParkingSpot FreeParkingSpot(int shipLength)
+        public ParkingSpot FindFreeParkingSpot(SpacePort spacePort, int shipLength)
         {
-            var freeSpot = ParkingSpots.
-                FirstOrDefault(s => s.MaxLength >= shipLength);
-            freeSpot = (freeSpot == null) ? throw new Exception("No available spots") : freeSpot;
-            return freeSpot;
+            using SqlConnection conn = new SqlConnection(Program.CONNECTION_STRING);
+            conn.Open();
+            string sql =
+                $"SELECT * " +
+                $"FROM ParkingSpots " +
+                $"WHERE SpacePortID = {spacePort.SpacePortID} " +
+                $"AND Occupied = 0 " +
+                $"AND MaxLength >= {shipLength}";
+            SqlCommand cmd = new SqlCommand(sql, conn);
+            using SqlDataReader rdr = cmd.ExecuteReader();
+            Console.WriteLine($"Searching for suitable ParkingSpot at {spacePort.Name} SpacePort.");
+            if (rdr.Read())
+            {
+                Console.WriteLine($"Unoccupied ParkingSpot found supporting your Ship's length of {shipLength}.");
+                return new ParkingSpot()
+                {
+                    ParkingSpotID = Int32.Parse(rdr["ParkingSpotID"].ToString()),
+                    MaxLength = Int32.Parse(rdr["MaxLength"].ToString()),
+                    SpacePortID = Int32.Parse(rdr["SpacePortID"].ToString()),
+                    Occupied = bool.Parse(rdr["Occupied"].ToString())
+                };
+            }
+            else
+            {
+                Console.WriteLine("No suitable ParkingSpots at " + spacePort.Name + " SpacePort");
+                //throw new Exception("No suitable ParkingSpots at " + spacePort.Name + " SpacePort");
+                return null;
+            }
         }
     }
 }
