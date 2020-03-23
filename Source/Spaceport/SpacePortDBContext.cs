@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace Spaceport
 {
     class SpacePortDBContext : DbContext
     {
-        public DbSet<Person> Person { get; set; }
-        public DbSet<ParkingSpot> ParkingSpot { get; set; }
-        public DbSet<ParkingSession> ParkingSession { get; set; }
-        public DbSet<SpacePort> SpacePort { get; set; }
+        public DbSet<Person> People { get; set; }
+        public DbSet<ParkingSpot> ParkingSpots { get; set; }
+        public DbSet<ParkingSession> ParkingSessions { get; set; }
+        public DbSet<SpacePort> SpacePorts { get; set; }
         public DbSet<SpaceShip> SpaceShip { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {

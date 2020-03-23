@@ -13,25 +13,31 @@ namespace Spaceport
         public const string CONNECTION_STRING = @"Server=den1.mssql7.gear.host;Database=spaceport;Uid=spaceport;Pwd=Zm0~!8U6r493;";
         static void Main(string[] args)
         {
-            Console.ReadLine();
-            WelcomeToSpacePark();
+            //Console.ReadLine();
+            //WelcomeToSpacePark();
             Console.WriteLine("Press any key to continue...");
             Console.ReadLine();
 
+            var context = new SpacePortDBContext();
+
+            var spot  = context.People.First();
+
+            Console.WriteLine(spot.Name);
+
             var luke = new Person() { Name = "Luke Skywalker", PersonID = 1 };
-            var xi = new Person() { Name = "Xi Jinping", PersonID = 2 };
-            var donald = new Person() { Name = "Donald Trump", PersonID = 3 };
+            //var xi = new Person() { Name = "Xi Jinping", PersonID = 2 };
+            //var donald = new Person() { Name = "Donald Trump", PersonID = 3 };
 
             var coruscantSpacePort = new SpacePort() {SpacePortID = 1, Name = "Coruscant" };
 
             SpaceShip bigShip = new StarShip() { SpaceShipID = 1, Length = 40 , Driver = luke};
             
-            var parkingSession = new ParkingSession()
-                .AtSpacePort(coruscantSpacePort)
-                .SetForShip(bigShip)
-                .ValidateParkingRight()
-                .FindFreeSpot()
-                .StartParkingSession();
+            //var parkingSession = new ParkingSession()
+            //    .AtSpacePort(coruscantSpacePort)
+            //    .SetForShip(bigShip)
+            //    .ValidateParkingRight()
+            //    .FindFreeSpot()
+            //    .StartParkingSession();
 
             Console.ReadLine();
         }
