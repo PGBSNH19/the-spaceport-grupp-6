@@ -1,7 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Spaceport
-{ 
+﻿namespace Spaceport
+{
     public class StarShip : SpaceShip
     {
         public StarShip()

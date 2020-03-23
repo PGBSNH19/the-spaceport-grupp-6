@@ -22,9 +22,9 @@ namespace Spaceport
             var xi = new Person() { Name = "Xi Jinping", PersonID = 2 };
             var donald = new Person() { Name = "Donald Trump", PersonID = 3 };
 
-            var coruscantSpacePort = new SpacePort() {SpacePortID = 1, Name="Coruscant" };
+            var coruscantSpacePort = new SpacePort() {SpacePortID = 1, Name = "Coruscant" };
 
-            SpaceShip bigShip = new StarShip() { SpaceShipID = 1, Length = 40 , Driver=luke};
+            SpaceShip bigShip = new StarShip() { SpaceShipID = 1, Length = 40 , Driver = luke};
             
             var parkingSession = new ParkingSession()
                 .AtSpacePort(coruscantSpacePort)
