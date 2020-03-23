@@ -1,9 +1,5 @@
-﻿using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Spaceport
 {
@@ -19,7 +15,7 @@ namespace Spaceport
 
         public bool IsPartOfStarwars()
         {
-            var test = APIConsumer.GetCharacterAsync("Xi Jiping");
+            var test = APIConsumer.GetCharacterAsync(Name);
             return test;
         }
     }
