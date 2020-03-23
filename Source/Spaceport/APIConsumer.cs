@@ -10,7 +10,7 @@ namespace Spaceport
 {
     public class APIConsumer
     {
-        public static async Task<bool> GetCharacterAsync(string search)
+        public static bool GetCharacterAsync(string search)
         {
             var restClient = new RestClient("https://swapi.co/api/");
             var restRequest = new RestRequest("people/?search=" + search, DataFormat.Json);
@@ -21,7 +21,6 @@ namespace Spaceport
             Console.WriteLine("Done...");
 
             var response = JsonConvert.DeserializeObject<CharacterDataRoot>(task.Result.Content);
-            Console.WriteLine(response.Results.First().Name);
             return response.Results.Any();
         }
     }

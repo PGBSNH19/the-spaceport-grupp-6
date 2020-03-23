@@ -19,7 +19,7 @@ namespace Spaceport
 
         public bool IsPartOfStarwars()
         {
-            var test = APIConsumer.GetCharacterAsync("Xi Jiping").Result;
+            var test = APIConsumer.GetCharacterAsync("Xi Jiping");
             return test;
         }
     }
