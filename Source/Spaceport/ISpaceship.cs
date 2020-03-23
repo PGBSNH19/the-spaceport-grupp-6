@@ -5,8 +5,11 @@ namespace Spaceport
 {
     public interface ISpaceShip
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SpaceShipID { get; set; }
-        public Person Driver { get; set; }
+        [Required]
+        public Person Person { get; set; }
         public int Length { get; set; }
     }
 
@@ -15,7 +18,8 @@ namespace Spaceport
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SpaceShipID { get; set; }
-        public Person Driver { get; set; }
+        [Required]
+        public Person Person { get; set; }
         public int Length { get; set; }
     }
 }

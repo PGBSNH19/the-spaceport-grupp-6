@@ -12,7 +12,7 @@ namespace Spaceport
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ParkingSpotID { get; set; }
         public int MaxLength { get; set; }
-        public int SpacePortID { get; set; }
+        public SpacePort SpacePort { get; set; }
         public bool Occupied { get; set; }
     }
 }

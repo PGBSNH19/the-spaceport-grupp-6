@@ -63,15 +63,15 @@ namespace Spaceport
 
         public ParkingSession ValidateParkingRight()
         {
-            ParkingToken = this.SpaceShip.Driver.IsPartOfStarwars();
+            ParkingToken = this.SpaceShip.Person.IsPartOfStarwars();
             if (ParkingToken)
             {
-                ComputerPrint($"{SpaceShip.Driver.Name}, what a pleasure!", 1000);
+                ComputerPrint($"{SpaceShip.Person.Name}, what a pleasure!", 1000);
                 ComputerPrint("You have been given an access token to park.");
-            } 
+            }
             else
             {
-                ComputerPrint($"{SpaceShip.Driver.Name}, I'm sorry.", 1000);
+                ComputerPrint($"{SpaceShip.Person.Name}, I'm sorry.", 1000);
                 ComputerPrint($"SpacePark cannot let you park.", 1000);
                 Console.ReadLine();
                 Environment.Exit(0);

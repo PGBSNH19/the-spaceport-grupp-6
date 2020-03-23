@@ -12,6 +12,16 @@
     <Compile Remove="Migrations\20200321125603_Initial.Designer.cs" />
     <Compile Remove="Migrations\20200321125916_Initial.cs" />
     <Compile Remove="Migrations\20200321125916_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200323182617_Initial.cs" />
+    <Compile Remove="Migrations\20200323182617_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200323183148_Second.cs" />
+    <Compile Remove="Migrations\20200323183148_Second.Designer.cs" />
+    <Compile Remove="Migrations\20200323183507_Initial.cs" />
+    <Compile Remove="Migrations\20200323183507_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200323192613_Initial.cs" />
+    <Compile Remove="Migrations\20200323192613_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200323193850_SpacePortObjectInParkingSpot.cs" />
+    <Compile Remove="Migrations\20200323193850_SpacePortObjectInParkingSpot.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
