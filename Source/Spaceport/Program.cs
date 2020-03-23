@@ -18,9 +18,9 @@ namespace Spaceport
             Console.WriteLine("Press any key to continue...");
             Console.ReadLine();
 
-
             var luke = new Person() { Name = "Luke Skywalker", PersonID = 1 };
             var xi = new Person() { Name = "Xi Jinping", PersonID = 2 };
+            var donald = new Person() { Name = "Donald Trump", PersonID = 3 };
 
             var coruscantSpacePort = new SpacePort() {SpacePortID = 1, Name="Coruscant" };
 
