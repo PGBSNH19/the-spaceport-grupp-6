@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Spaceport
 {
+    [Table("Persons")]
     public class Person
     {
         [Key]
@@ -10,6 +11,7 @@ namespace Spaceport
         public int PersonID { get; set; }
         // Note: 
         // Specify more of these to avoid varchar(max)
+        [Required]
         [MaxLength(50)] 
         public string Name { get; set; }
 

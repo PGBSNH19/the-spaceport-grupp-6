@@ -10,7 +10,7 @@ using Spaceport;
 namespace Spaceport.Migrations
 {
     [DbContext(typeof(SpacePortDBContext))]
-    [Migration("20200323195538_Initial")]
+    [Migration("20200323220620_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,9 +37,6 @@ namespace Spaceport.Migrations
                     b.Property<DateTime>("RegistrationTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SpacePortID")
-                        .HasColumnType("int");
-
                     b.Property<int>("SpaceShipID")
                         .HasColumnType("int");
 
@@ -47,11 +44,9 @@ namespace Spaceport.Migrations
 
                     b.HasIndex("ParkingSpotID");
 
-                    b.HasIndex("SpacePortID");
-
                     b.HasIndex("SpaceShipID");
 
-                    b.ToTable("ParkingSession");
+                    b.ToTable("ParkingSessions");
                 });
 
             modelBuilder.Entity("Spaceport.ParkingSpot", b =>
@@ -67,14 +62,14 @@ namespace Spaceport.Migrations
                     b.Property<bool>("Occupied")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("SpacePortID")
+                    b.Property<int>("SpacePortID")
                         .HasColumnType("int");
 
                     b.HasKey("ParkingSpotID");
 
                     b.HasIndex("SpacePortID");
 
-                    b.ToTable("ParkingSpot");
+                    b.ToTable("ParkingSpots");
                 });
 
             modelBuilder.Entity("Spaceport.Person", b =>
@@ -85,12 +80,13 @@ namespace Spaceport.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.HasKey("PersonID");
 
-                    b.ToTable("People");
+                    b.ToTable("Persons");
                 });
 
             modelBuilder.Entity("Spaceport.SpacePort", b =>
@@ -101,11 +97,12 @@ namespace Spaceport.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SpacePortID");
 
-                    b.ToTable("SpacePort");
+                    b.ToTable("SpacePorts");
                 });
 
             modelBuilder.Entity("Spaceport.SpaceShip", b =>
@@ -115,17 +112,17 @@ namespace Spaceport.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Length")
+                    b.Property<int>("DriverPersonID")
                         .HasColumnType("int");
 
-                    b.Property<int>("PersonID")
+                    b.Property<int>("Length")
                         .HasColumnType("int");
 
                     b.HasKey("SpaceShipID");
 
-                    b.HasIndex("PersonID");
+                    b.HasIndex("DriverPersonID");
 
-                    b.ToTable("SpaceShip");
+                    b.ToTable("SpaceShips");
                 });
 
             modelBuilder.Entity("Spaceport.ParkingSession", b =>
@@ -133,12 +130,6 @@ namespace Spaceport.Migrations
                     b.HasOne("Spaceport.ParkingSpot", "ParkingSpot")
                         .WithMany()
                         .HasForeignKey("ParkingSpotID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Spaceport.SpacePort", "SpacePort")
-                        .WithMany()
-                        .HasForeignKey("SpacePortID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -153,14 +144,16 @@ namespace Spaceport.Migrations
                 {
                     b.HasOne("Spaceport.SpacePort", "SpacePort")
                         .WithMany()
-                        .HasForeignKey("SpacePortID");
+                        .HasForeignKey("SpacePortID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Spaceport.SpaceShip", b =>
                 {
-                    b.HasOne("Spaceport.Person", "Person")
+                    b.HasOne("Spaceport.Person", "Driver")
                         .WithMany()
-                        .HasForeignKey("PersonID")
+                        .HasForeignKey("DriverPersonID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

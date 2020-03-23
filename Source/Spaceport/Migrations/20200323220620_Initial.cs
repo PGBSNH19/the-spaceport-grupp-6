@@ -8,149 +8,137 @@ namespace Spaceport.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "People",
+                name: "Persons",
                 columns: table => new
                 {
                     PersonID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 50, nullable: true)
+                    Name = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_People", x => x.PersonID);
+                    table.PrimaryKey("PK_Persons", x => x.PersonID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SpacePort",
+                name: "SpacePorts",
                 columns: table => new
                 {
                     SpacePortID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SpacePort", x => x.SpacePortID);
+                    table.PrimaryKey("PK_SpacePorts", x => x.SpacePortID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SpaceShip",
+                name: "SpaceShips",
                 columns: table => new
                 {
                     SpaceShipID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PersonID = table.Column<int>(nullable: false),
+                    DriverPersonID = table.Column<int>(nullable: false),
                     Length = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SpaceShip", x => x.SpaceShipID);
+                    table.PrimaryKey("PK_SpaceShips", x => x.SpaceShipID);
                     table.ForeignKey(
-                        name: "FK_SpaceShip_People_PersonID",
-                        column: x => x.PersonID,
-                        principalTable: "People",
+                        name: "FK_SpaceShips_Persons_DriverPersonID",
+                        column: x => x.DriverPersonID,
+                        principalTable: "Persons",
                         principalColumn: "PersonID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ParkingSpot",
+                name: "ParkingSpots",
                 columns: table => new
                 {
                     ParkingSpotID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MaxLength = table.Column<int>(nullable: false),
-                    SpacePortID = table.Column<int>(nullable: true),
+                    SpacePortID = table.Column<int>(nullable: false),
                     Occupied = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ParkingSpot", x => x.ParkingSpotID);
+                    table.PrimaryKey("PK_ParkingSpots", x => x.ParkingSpotID);
                     table.ForeignKey(
-                        name: "FK_ParkingSpot_SpacePort_SpacePortID",
+                        name: "FK_ParkingSpots_SpacePorts_SpacePortID",
                         column: x => x.SpacePortID,
-                        principalTable: "SpacePort",
+                        principalTable: "SpacePorts",
                         principalColumn: "SpacePortID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ParkingSession",
+                name: "ParkingSessions",
                 columns: table => new
                 {
                     ParkingSessionID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ParkingSpotID = table.Column<int>(nullable: false),
                     SpaceShipID = table.Column<int>(nullable: false),
-                    SpacePortID = table.Column<int>(nullable: false),
                     ParkingToken = table.Column<bool>(nullable: false),
                     RegistrationTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ParkingSession", x => x.ParkingSessionID);
+                    table.PrimaryKey("PK_ParkingSessions", x => x.ParkingSessionID);
                     table.ForeignKey(
-                        name: "FK_ParkingSession_ParkingSpot_ParkingSpotID",
+                        name: "FK_ParkingSessions_ParkingSpots_ParkingSpotID",
                         column: x => x.ParkingSpotID,
-                        principalTable: "ParkingSpot",
+                        principalTable: "ParkingSpots",
                         principalColumn: "ParkingSpotID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ParkingSession_SpacePort_SpacePortID",
-                        column: x => x.SpacePortID,
-                        principalTable: "SpacePort",
-                        principalColumn: "SpacePortID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ParkingSession_SpaceShip_SpaceShipID",
+                        name: "FK_ParkingSessions_SpaceShips_SpaceShipID",
                         column: x => x.SpaceShipID,
-                        principalTable: "SpaceShip",
+                        principalTable: "SpaceShips",
                         principalColumn: "SpaceShipID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ParkingSession_ParkingSpotID",
-                table: "ParkingSession",
+                name: "IX_ParkingSessions_ParkingSpotID",
+                table: "ParkingSessions",
                 column: "ParkingSpotID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ParkingSession_SpacePortID",
-                table: "ParkingSession",
-                column: "SpacePortID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ParkingSession_SpaceShipID",
-                table: "ParkingSession",
+                name: "IX_ParkingSessions_SpaceShipID",
+                table: "ParkingSessions",
                 column: "SpaceShipID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ParkingSpot_SpacePortID",
-                table: "ParkingSpot",
+                name: "IX_ParkingSpots_SpacePortID",
+                table: "ParkingSpots",
                 column: "SpacePortID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SpaceShip_PersonID",
-                table: "SpaceShip",
-                column: "PersonID");
+                name: "IX_SpaceShips_DriverPersonID",
+                table: "SpaceShips",
+                column: "DriverPersonID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ParkingSession");
+                name: "ParkingSessions");
 
             migrationBuilder.DropTable(
-                name: "ParkingSpot");
+                name: "ParkingSpots");
 
             migrationBuilder.DropTable(
-                name: "SpaceShip");
+                name: "SpaceShips");
 
             migrationBuilder.DropTable(
-                name: "SpacePort");
+                name: "SpacePorts");
 
             migrationBuilder.DropTable(
-                name: "People");
+                name: "Persons");
         }
     }
 }

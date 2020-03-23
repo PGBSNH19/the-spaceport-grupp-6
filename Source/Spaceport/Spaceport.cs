@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 
 namespace Spaceport
 {
+    [Table("SpacePorts")]
     public class SpacePort
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SpacePortID { get; set; }
+        [Required]
         public string Name { get; set; }
 
         public SpacePort()

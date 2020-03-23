@@ -22,6 +22,10 @@
     <Compile Remove="Migrations\20200323192613_Initial.Designer.cs" />
     <Compile Remove="Migrations\20200323193850_SpacePortObjectInParkingSpot.cs" />
     <Compile Remove="Migrations\20200323193850_SpacePortObjectInParkingSpot.Designer.cs" />
+    <Compile Remove="Migrations\20200323202915_Update.cs" />
+    <Compile Remove="Migrations\20200323202915_Update.Designer.cs" />
+    <Compile Remove="Migrations\20200323204810_Initial.cs" />
+    <Compile Remove="Migrations\20200323204810_Initial.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
