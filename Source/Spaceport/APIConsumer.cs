@@ -14,9 +14,9 @@ namespace Spaceport
             var restRequest = new RestRequest("people/?search=" + search, DataFormat.Json);
             var task = restClient.ExecuteAsync<CharacterDataRoot>(restRequest);
 
-            Console.WriteLine("Fetching...");
+            Modules.InfoPrint("\nFetching...");
             task.Wait();
-            Console.WriteLine("Done...");
+            Modules.InfoPrint("Done...");
 
             var response = JsonConvert.DeserializeObject<CharacterDataRoot>(task.Result.Content);
             return response.Results.Any();

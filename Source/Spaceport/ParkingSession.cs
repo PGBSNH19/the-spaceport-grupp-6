@@ -21,127 +21,116 @@ namespace Spaceport
         public bool ParkingToken { get; set; }
         [Required]
         public DateTime RegistrationTime { get; set; }
+        [NotMapped]
+        public SpacePort SpacePort { get; set; }
 
         public ParkingSession()
         {
             var left = Console.CursorLeft;
-            ComputerPrint("Welcome to SpacePark!");
-            ComputerPrint("Which of our stations woulld do like to park at?", 1000);
+            Modules.ComputerPrint("\nWelcome to SpacePark!\nWhich of our stations would do like to park at?");
         }
 
-        internal void ComputerPrint(string s, int milliSeconds = 500)
+        public ParkingSession AtSpacePort(SpacePort port)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            for (int i = 0; i < s.Length; i++)
-            {
-                Console.Write(s[i]);
-                Thread.Sleep(20);
-            }
-            Console.Write("\n");
-            Console.ForegroundColor = ConsoleColor.White;
-            Thread.Sleep(milliSeconds);
+            SpacePort = port;
+            Modules.ComputerPrint($"\nThank you for choosing SpacePort {SpacePort.Name}.\nWe need some information about your ship.");
+            return this;
         }
-
-        //public ParkingSession AtSpacePort(SpacePort port)
-        //{
-        //    SpacePort = port;
-        //    ComputerPrint($"Thank you for choosing SpacePort {SpacePort.Name}.");
-        //    ComputerPrint($"We need some information about your ship.", 1000);
-        //    return this;
-        //}
 
 
         public ParkingSession SetForShip(SpaceShip ship)
         {
             SpaceShip = ship;
-            ComputerPrint("Your ship has been registered.", 1000);
-            ComputerPrint("SpacePark is an exclusive SpacePort.");
-            ComputerPrint("We need to run a background check on you.");
+            Modules.ComputerPrint("\nYour ship has been registered.");
             return this;
         }
 
         public ParkingSession ValidateParkingRight()
         {
+            Modules.ComputerPrint("\nSpacePark is an exclusive SpacePort.\nWe need to run a background check on you.");
             ParkingToken = this.SpaceShip.Driver.IsPartOfStarwars();
             if (ParkingToken)
             {
-                ComputerPrint($"{SpaceShip.Driver.Name}, what a pleasure!", 1000);
-                ComputerPrint("You have been given an access token to park.");
+                Modules.ComputerPrint($"\n{SpaceShip.Driver.Name}, what a pleasure!\nYou have been given an access token to park.");
             }
             else
             {
-                ComputerPrint($"{SpaceShip.Driver.Name}, I'm sorry.", 1000);
-                ComputerPrint($"SpacePark cannot let you park.", 1000);
+                Modules.ComputerPrint($"\n{SpaceShip.Driver.Name} sorry SpacePark cannot let you park.");
                 Console.ReadLine();
                 Environment.Exit(0);
             }
             return this;
         }
 
-        //public ParkingSession FindFreeSpot()
-        //{
-        //    ParkingSpot = SpacePort.FindFreeParkingSpot(SpacePort, SpaceShip.Length);
-        //    if (ParkingSpot == null)
-        //        throw new Exception("No suitable ParkingSpots available");
-        //    return this;
-        //}
+        public ParkingSession FindFreeSpot()
+        {
+            ParkingSpot = SpacePort.FindFreeParkingSpot(SpacePort, SpaceShip);
+            if (ParkingSpot == null)
+            {
+                Modules.ComputerPrint($"{"\nNo suitable parking spot found."}");
+                Console.ReadLine();
+                Environment.Exit(0);
 
-        //public ParkingSession StartParkingSession()
-        //{
-        //    RegistrationTime = DateTime.Now;
-        //    using SqlConnection conn = new SqlConnection(Program.CONNECTION_STRING);
+            }
+            return this;
+        }
 
-        //    Console.WriteLine("INSERT INTO ParkingSessions " +
-        //        "(ParkingSpotID, " +
-        //        "SpaceShipID, " +
-        //        "SpacePortID, " +
-        //        "ParkingToken, " +
-        //        "RegistrationTime) " +
-        //        "VALUES " +
-        //        $"({ParkingSpot.ParkingSpotID}, " +
-        //        $"{SpaceShip.SpaceShipID}, " +
-        //        $"{SpacePort.SpacePortID}, " +
-        //        $"{ParkingToken}, " +
-        //        $"{RegistrationTime.ToString("yyyy/MM/dd hh:mm:ss.fffffff")})");
+        public ParkingSession StartParkingSession()
+        {
+            Console.WriteLine("\nParking session started");
+            return this;
+            //    RegistrationTime = DateTime.Now;
+            //    using SqlConnection conn = new SqlConnection(Program.CONNECTION_STRING);
 
-        //    Console.WriteLine("Press any key to update database...");
-        //    Console.ReadLine();
+            //    Console.WriteLine("INSERT INTO ParkingSessions " +
+            //        "(ParkingSpotID, " +
+            //        "SpaceShipID, " +
+            //        "SpacePortID, " +
+            //        "ParkingToken, " +
+            //        "RegistrationTime) " +
+            //        "VALUES " +
+            //        $"({ParkingSpot.ParkingSpotID}, " +
+            //        $"{SpaceShip.SpaceShipID}, " +
+            //        $"{SpacePort.SpacePortID}, " +
+            //        $"{ParkingToken}, " +
+            //        $"{RegistrationTime.ToString("yyyy/MM/dd hh:mm:ss.fffffff")})");
 
-        //    conn.Open();
-        //    SqlCommand cmd = new SqlCommand(
-        //        "INSERT INTO ParkingSessions " +
-        //        "(ParkingSpotID, " +
-        //        "SpaceShipID, " +
-        //        "SpacePortID, " +
-        //        "ParkingToken, " +
-        //        "RegistrationTime) " +
-        //        "VALUES " +
-        //        $"({ParkingSpot.ParkingSpotID}, " +
-        //        $"{SpaceShip.SpaceShipID}, " +
-        //        $"{SpacePort.SpacePortID}, " +
-        //        $"@t, " +
-        //        $"@d)"
-        //        , conn); 
+            //    Console.WriteLine("Press any key to update database...");
+            //    Console.ReadLine();
 
-        //    var ParamRegistrationTime = new SqlParameter("@d", SqlDbType.DateTime2);
-        //    ParamRegistrationTime.Value = RegistrationTime;
-        //    cmd.Parameters.Add(ParamRegistrationTime);
+            //    conn.Open();
+            //    SqlCommand cmd = new SqlCommand(
+            //        "INSERT INTO ParkingSessions " +
+            //        "(ParkingSpotID, " +
+            //        "SpaceShipID, " +
+            //        "SpacePortID, " +
+            //        "ParkingToken, " +
+            //        "RegistrationTime) " +
+            //        "VALUES " +
+            //        $"({ParkingSpot.ParkingSpotID}, " +
+            //        $"{SpaceShip.SpaceShipID}, " +
+            //        $"{SpacePort.SpacePortID}, " +
+            //        $"@t, " +
+            //        $"@d)"
+            //        , conn); 
 
-        //    var ParamToken = new SqlParameter("@t", SqlDbType.Bit);
-        //    ParamToken.Value = ParkingToken;
-        //    cmd.Parameters.Add(ParamToken);
+            //    var ParamRegistrationTime = new SqlParameter("@d", SqlDbType.DateTime2);
+            //    ParamRegistrationTime.Value = RegistrationTime;
+            //    cmd.Parameters.Add(ParamRegistrationTime);
 
-        //    try
-        //    {
-        //        cmd.ExecuteNonQuery();
-        //        Console.WriteLine("Your parking has been granted and ParkingSession verified!");
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine("Exception adding ParkingSession to DB: " + e.ToString());
-        //    }
-            
-        //    return this;
-        //}
+            //    var ParamToken = new SqlParameter("@t", SqlDbType.Bit);
+            //    ParamToken.Value = ParkingToken;
+            //    cmd.Parameters.Add(ParamToken);
+
+            //    try
+            //    {
+            //        cmd.ExecuteNonQuery();
+            //        Console.WriteLine("Your parking has been granted and ParkingSession verified!");
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Console.WriteLine("Exception adding ParkingSession to DB: " + e.ToString());
+            //    }
+        }
     }
 }

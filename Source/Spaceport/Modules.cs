@@ -8,13 +8,36 @@ namespace Spaceport
 {
     class Modules
     {
-        private static void WelcomeToSpacePark()
+        public static void InfoPrint(string s, int milliSeconds = 0)
+        {
+            for (int i = 0; i < s.Length; i++)
+            {
+                Console.Write(s[i]);
+                Thread.Sleep(10);
+            }
+            Console.Write("\n");
+            Thread.Sleep(milliSeconds);
+        }
+
+        public static void ComputerPrint(string s, int milliSeconds = 2000)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            for (int i = 0; i < s.Length; i++)
+            {
+                Console.Write(s[i]);
+                Thread.Sleep(10);
+            }
+            Console.Write("\n");
+            Console.ForegroundColor = ConsoleColor.White;
+            Thread.Sleep(milliSeconds);
+        }
+
+        public static void WelcomeToSpacePark()
         {
             Console.Clear();
             Thread.Sleep(1000);
             Console.ForegroundColor = ConsoleColor.Green;
             var logo = File.ReadAllLines("spacepark_logo.txt");
-
 
             List<string> textArt = new List<string>();
 
@@ -65,9 +88,6 @@ namespace Spaceport
                 }
             }
 
-            Thread.Sleep(500);
-            Console.Clear();
-            Thread.Sleep(100);
             Console.SetCursorPosition(0, 0);
 
             foreach (string line in logo)
@@ -77,6 +97,7 @@ namespace Spaceport
             }
 
             Console.ForegroundColor = ConsoleColor.White;
+            Thread.Sleep(1000);
         }
     }
 }

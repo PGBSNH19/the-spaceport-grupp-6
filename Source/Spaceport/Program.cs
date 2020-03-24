@@ -10,79 +10,56 @@ namespace Spaceport
 {
     class Program
     {
-        //public readonly string CONNECTION_STRING = Environment.GetEnvironmentVariable("project3_spaceport");
-        public const string CONNECTION_STRING = @"Server=den1.mssql8.gear.host;Database=spaceport6;Uid=spaceport6;Pwd=Xb7I3!HZ12_g;";
-        //public const string CONNECTION_STRING = @"Server=.\SQLExpress;Database=spaceport6;Integrated Security=SSPI;";
+        public static readonly string CONNECTION_STRING = Environment.GetEnvironmentVariable("project3_spaceport");
+
         static void Main(string[] args)
         {
-            //Console.ReadLine();
-            //Modules.WelcomeToSpacePark();
-            Console.WriteLine("Press any key to continue...");
             Console.ReadLine();
-
-            var context = new SpacePortDBContext();
-
-            Console.WriteLine("Fetching ParkingSpots from Database...");
-            var parkingSpots = GetParkingSpots();
-            Console.WriteLine("Done.");
-
-            Console.WriteLine("Fetching SpacePorts from Database...");
-            var spacePorts = GetSpacePorts();
-            Console.WriteLine("Done.");
-
-            Console.WriteLine("Fetching People from Database...");
-            var people = GetPeople();
-            Console.WriteLine("Done.");
+            Modules.WelcomeToSpacePark();
 
 
-            // Ships cannot get their Person object - why?
-            Console.WriteLine("Fetching SpaceShips from Database...");
-            var ships = GetShips();
-            Console.WriteLine("Done");
+            // Database async fetch
+            Modules.InfoPrint("Fetching SpacePorts from Database...");
+            var spacePorts = GetSpacePortsAsync();
 
-            foreach(var ship in ships)
-            {
-                Console.ReadLine();
-            }
+            Modules.InfoPrint("Fetching SpaceShips from Database...");
+            var spaceShips = GetShipsAsync();
 
-            var luke = new Person() { Name = "Luke Skywalker", PersonID = 1 };
+            Task.WaitAll(new Task[] { spaceShips, spacePorts });
+            Modules.InfoPrint("Done");
 
-            var coruscantSpacePort = new SpacePort() { SpacePortID = 1, Name = "Coruscant" };
-
-            //SpaceShip bigShip = new StarShip() { SpaceShipID = 1, Length = 40, Driver = luke };
-
-            //var parkingSession = new ParkingSession()
-            //    .AtSpacePort(coruscantSpacePort)
-            //    .SetForShip(bigShip)
-            //    .ValidateParkingRight()
-            //    .FindFreeSpot()
-            //    .StartParkingSession();
+            var parkingSession = new ParkingSession()
+                .AtSpacePort(spacePorts.Result.Where(n => n.Name == "Coruscant").First())
+                .SetForShip(spaceShips.Result.Where(s => s.Driver.Name == "Luke Skywalker").First())
+                .ValidateParkingRight()
+                .FindFreeSpot()
+                .StartParkingSession();
 
             Console.ReadLine();
         }
 
-        public static List<ParkingSpot> GetParkingSpots()
+        public static async Task<List<ParkingSpot>> GetParkingSpotsAsync()
         {
             using var context = new SpacePortDBContext();
-            return context.ParkingSpots.ToList();
+            return await context.ParkingSpots.ToListAsync();
         }
 
-        public static List<SpacePort> GetSpacePorts()
+        public static async Task<List<SpacePort>> GetSpacePortsAsync()
         {
             using var context = new SpacePortDBContext();
-            return context.SpacePorts.ToList();
+            return await context.SpacePorts.ToListAsync();
         }
 
-        public static List<Person> GetPeople()
+        public static async Task<List<Person>> GetPeopleAsync()
         {
             using var context = new SpacePortDBContext();
-            return context.Persons.ToList();
+            return await context.Persons.ToListAsync();
         }
 
-        public static List<SpaceShip> GetShips()
+        public static async Task<List<SpaceShip>> GetShipsAsync()
         {
             using var context = new SpacePortDBContext();
-            return context.SpaceShips.Include(x => x.Driver).ToList();
+            return await context.SpaceShips.Include(x => x.Driver).ToListAsync();
         }
     }
 }

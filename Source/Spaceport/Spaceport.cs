@@ -23,37 +23,15 @@ namespace Spaceport
 
         }
 
-        public ParkingSpot FindFreeParkingSpot(SpacePort spacePort, int shipLength)
+        public ParkingSpot FindFreeParkingSpot(SpacePort spacePort, SpaceShip spaceShip)
         {
-            return new ParkingSpot() { SpacePort = spacePort };
-            //using SqlConnection conn = new SqlConnection(Program.CONNECTION_STRING);
-            //conn.Open();
-            //string sql =
-            //    $"SELECT * " +
-            //    $"FROM ParkingSpots " +
-            //    $"WHERE SpacePortID = {spacePort.SpacePortID} " +
-            //    $"AND Occupied = 0 " +
-            //    $"AND MaxLength >= {shipLength}";
-            //SqlCommand cmd = new SqlCommand(sql, conn);
-            //using SqlDataReader rdr = cmd.ExecuteReader();
-            //Console.WriteLine($"Searching for suitable ParkingSpot at {spacePort.Name} SpacePort.");
-            //if (rdr.Read())
-            //{
-            //    Console.WriteLine($"Unoccupied ParkingSpot found supporting your Ship's length of {shipLength}.");
-            //    return new ParkingSpot()
-            //    {
-            //        ParkingSpotID = Int32.Parse(rdr["ParkingSpotID"].ToString()),
-            //        MaxLength = Int32.Parse(rdr["MaxLength"].ToString()),
-            //        SpacePortID = Int32.Parse(rdr["SpacePortID"].ToString()),
-            //        Occupied = bool.Parse(rdr["Occupied"].ToString())
-            //    };
-            //}
-            //else
-            //{
-            //    Console.WriteLine("No suitable ParkingSpots at " + spacePort.Name + " SpacePort");
-            //    //throw new Exception("No suitable ParkingSpots at " + spacePort.Name + " SpacePort");
-            //    return null;
-            //}
+            using SpacePortDBContext context = new SpacePortDBContext();
+            var result = context.ParkingSpots.
+                Where(x => x.SpacePort == spacePort
+                && x.Occupied == false
+                && x.MaxLength >= spaceShip.Length);
+
+            return (result.Count() == 0) ? null : result.First();
         }
     }
 }
