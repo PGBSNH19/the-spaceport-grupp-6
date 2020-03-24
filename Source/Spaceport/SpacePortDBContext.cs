@@ -10,8 +10,8 @@ namespace Spaceport
         public DbSet<SpacePort> SpacePorts { get; set; }
         public DbSet<SpaceShip> SpaceShips { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) 
+        {
             optionsBuilder.EnableSensitiveDataLogging(true);
             optionsBuilder.UseSqlServer(Program.CONNECTION_STRING);
         }

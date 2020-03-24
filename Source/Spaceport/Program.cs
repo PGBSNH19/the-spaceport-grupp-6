@@ -15,18 +15,16 @@ namespace Spaceport
         static void Main(string[] args)
         {
             Console.ReadLine();
-            Modules.WelcomeToSpacePark();
+            Styling.WelcomeToSpacePark();
 
-
-            // Database async fetch
-            Modules.InfoPrint("Fetching SpacePorts from Database...");
+            Styling.InfoPrint("Fetching SpacePorts from Database");
             var spacePorts = GetSpacePortsAsync();
-
-            Modules.InfoPrint("Fetching SpaceShips from Database...");
+            Styling.InfoPrint("Fetching SpaceShips from Database");
             var spaceShips = GetShipsAsync();
 
-            Task.WaitAll(new Task[] { spaceShips, spacePorts });
-            Modules.InfoPrint("Done");
+            new VisualProgress().Show(new Task[] { spaceShips, spacePorts });
+
+            Styling.InfoPrint("\nDone");
 
             var parkingSession = new ParkingSession()
                 .AtSpacePort(spacePorts.Result.Where(n => n.Name == "Coruscant").First())
@@ -37,6 +35,7 @@ namespace Spaceport
 
             Console.ReadLine();
         }
+
 
         public static async Task<List<ParkingSpot>> GetParkingSpotsAsync()
         {

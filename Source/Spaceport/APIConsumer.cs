@@ -3,6 +3,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Spaceport
 {
@@ -10,13 +11,14 @@ namespace Spaceport
     {
         public static bool GetCharacterAsync(string search)
         {
-            var restClient = new RestClient("https://swapi.co/api/");
-            var restRequest = new RestRequest("people/?search=" + search, DataFormat.Json);
-            var task = restClient.ExecuteAsync<CharacterDataRoot>(restRequest);
+            var task = new RestClient("https://swapi.co/api/")
+                .ExecuteAsync<CharacterDataRoot>(
+                    new RestRequest("people/?search=" + search, DataFormat.Json)
+                );
 
-            Modules.InfoPrint("\nFetching...");
-            task.Wait();
-            Modules.InfoPrint("Done...");
+            Styling.InfoPrint("\nWaiting for API response");
+            new VisualProgress().Show(new Task[] { task }); 
+            Styling.InfoPrint("\nResults are in");
 
             var response = JsonConvert.DeserializeObject<CharacterDataRoot>(task.Result.Content);
             return response.Results.Any();

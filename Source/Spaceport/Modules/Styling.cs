@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace Spaceport
 {
-    class Modules
+    public class Styling
     {
         public static void InfoPrint(string s, int milliSeconds = 0)
         {
@@ -36,7 +36,6 @@ namespace Spaceport
         {
             Console.Clear();
             Thread.Sleep(1000);
-            Console.ForegroundColor = ConsoleColor.Green;
             var logo = File.ReadAllLines("spacepark_logo.txt");
 
             List<string> textArt = new List<string>();
@@ -68,12 +67,15 @@ namespace Spaceport
                     Console.CursorLeft = x;
                     if (letters[y, x] != ' ')
                     {
+                        Console.ForegroundColor = ConsoleColor.White;
                         Console.Write(letters[y, x]);
-                        Thread.Sleep(3);
+                        Thread.Sleep(2);
                     }
                 }
             }
+
             Thread.Sleep(500);
+
             foreach (int y in Enumerable.Range(0, textArt.Count - 1).OrderBy(x => r.Next()))
             {
                 Console.CursorTop = y;
@@ -92,6 +94,7 @@ namespace Spaceport
 
             foreach (string line in logo)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(line);
                 Thread.Sleep(50);
             }
