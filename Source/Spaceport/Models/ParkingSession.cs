@@ -22,8 +22,8 @@ namespace Spaceport
         public DateTime RegistrationTime { get; set; }
         [NotMapped]
         public SpacePort SpacePort { get; set; }
-        [ForeignKey("InvoiceID")]
         [Required]
+        [ForeignKey("InvoiceID")]
         public Invoice Invoice { get; set; }
 
         public ParkingSession()
@@ -45,7 +45,7 @@ namespace Spaceport
                 Paid = false
             };
 
-            Invoice.AddEntityToDatabase();
+            //Invoice.AddEntityToDatabase();
             return this;
         }
 
@@ -87,7 +87,6 @@ namespace Spaceport
                 Styling.ConsolePrint($"{"\nNo suitable parking spot found."}");
                 Console.ReadLine();
                 Environment.Exit(0);
-
             }
             return this;
         }
@@ -96,8 +95,10 @@ namespace Spaceport
         {
             using (var context = new SpacePortDBContext())
             {
-                var parkingSessionContext = context.Set<ParkingSession>();
-                parkingSessionContext.Add(this);
+                //var parkingSessionContext = context.Set<ParkingSession>();
+                //parkingSessionContext.Add(this);
+                context.ParkingSessions.Add(this);
+
                 context.SaveChanges();
             }
 

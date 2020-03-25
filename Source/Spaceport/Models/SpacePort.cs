@@ -25,13 +25,14 @@ namespace Spaceport
 
         public ParkingSpot FindFreeParkingSpot(SpacePort spacePort, SpaceShip spaceShip)
         {
-            using SpacePortDBContext context = new SpacePortDBContext();
-            var result = context.ParkingSpots.
-                Where(x => x.SpacePort == spacePort
-                && x.Occupied == false
-                && x.MaxLength >= spaceShip.Length);
+            //using SpacePortDBContext context = new SpacePortDBContext();
+            //var result = context.ParkingSpots.
+            //    Where(x => x.SpacePort == spacePort
+            //    && x.Occupied == false
+            //    && x.MaxLength >= spaceShip.Length);
 
-            return (result.Count() == 0) ? null : result.First();
+            //return (result.Count() == 0) ? null : result.First();
+            return new ParkingSpot() { Occupied = false, MaxLength = 50 };
         }
     }
 }

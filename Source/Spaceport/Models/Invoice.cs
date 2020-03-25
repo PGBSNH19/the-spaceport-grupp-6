@@ -20,16 +20,24 @@ namespace Spaceport.Models
             int amountToPay = timeDifference.Hours * costPerHour;
             AmountPaid = amountToPay;
             Paid = true;
+            Console.WriteLine("\nInvoice Paid");
+            //UpdateEntityInDatabase();
         }
 
-        public void AddEntityToDatabase()
-        {
-            using (var context = new SpacePortDBContext())
-            {
-                var invoiceContext = context.Set<Invoice>();
-                invoiceContext.Add(this);
-                context.SaveChanges();
-            }
-        }
+        //internal void UpdateEntityInDatabase()
+        //{
+        //    using var context = new SpacePortDBContext();
+        //    var invoiceContext = context.Set<Invoice>();
+        //    invoiceContext.Update(this);
+        //    context.SaveChanges();
+        //}
+
+        //public void AddEntityToDatabase()
+        //{
+        //    using var context = new SpacePortDBContext();
+        //    var invoiceContext = context.Set<Invoice>();
+        //    invoiceContext.Add(this);
+        //    context.SaveChanges();
+        //}
     }
 }
