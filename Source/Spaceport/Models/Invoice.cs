@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace Spaceport.Models
 {
@@ -29,6 +28,7 @@ namespace Spaceport.Models
             using (var context = new SpacePortDBContext())
             {
                 context.Invoices.Update(this);
+                context.SaveChanges();
             }
         }
     }

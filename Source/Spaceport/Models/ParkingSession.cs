@@ -1,10 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
-using Spaceport.Models;
+﻿using Spaceport.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
-using System.Threading;
 
 namespace Spaceport
 {
@@ -15,6 +12,7 @@ namespace Spaceport
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ParkingSessionID { get; set; }
         [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public ParkingSpot ParkingSpot { get; set; }
         [Required]
         public virtual SpaceShip SpaceShip { get; set; }
@@ -93,6 +91,11 @@ namespace Spaceport
 
         public ParkingSession StartParkingSession()
         {
+            using (var context = new SpacePortDBContext())
+            {
+                context.ParkingSessions.Add(this);
+                context.SaveChanges();
+            }
             Console.WriteLine("\nParking session started");
             return this;
         }
