@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Spaceport.Models;
 
 namespace Spaceport
 {
@@ -9,6 +10,7 @@ namespace Spaceport
         public DbSet<ParkingSession> ParkingSessions { get; set; }
         public DbSet<SpacePort> SpacePorts { get; set; }
         public DbSet<SpaceShip> SpaceShips { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) 
         {

@@ -26,6 +26,10 @@
     <Compile Remove="Migrations\20200323202915_Update.Designer.cs" />
     <Compile Remove="Migrations\20200323204810_Initial.cs" />
     <Compile Remove="Migrations\20200323204810_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200325084412_Invoice_added.cs" />
+    <Compile Remove="Migrations\20200325084412_Invoice_added.Designer.cs" />
+    <Compile Remove="Migrations\20200325084626_Invoice_added.cs" />
+    <Compile Remove="Migrations\20200325084626_Invoice_added.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,10 +52,6 @@
     <None Update="spacepark_logo.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

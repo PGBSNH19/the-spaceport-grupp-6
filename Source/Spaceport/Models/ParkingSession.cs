@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Spaceport.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,6 +24,8 @@ namespace Spaceport
         public DateTime RegistrationTime { get; set; }
         [NotMapped]
         public SpacePort SpacePort { get; set; }
+        [Required]
+        public Invoice Invoice { get; set; }
 
         public ParkingSession()
         {

@@ -10,7 +10,7 @@ namespace Spaceport
 {
     class Program
     {
-        public static readonly string CONNECTION_STRING = Environment.GetEnvironmentVariable("project3_spaceport");
+        public static readonly string CONNECTION_STRING = "Server=den1.mssql8.gear.host;Database=spaceport6;Uid=spaceport6;Pwd=Xb7I3!HZ12_g;";
 
         static void Main(string[] args)
         {
