@@ -18,6 +18,11 @@ namespace Spaceport
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<Person>().HasData(
+            //    new Person(
+            //    )
+            //);
+                
             base.OnModelCreating(modelBuilder);
         }
     }
