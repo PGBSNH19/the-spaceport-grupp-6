@@ -18,15 +18,10 @@ namespace Spaceport
         [Required]
         public string Name { get; set; }
 
-        public SpacePort()
-        {
-
-        }
-
-        public ParkingSpot FindFreeParkingSpot(SpacePort spacePort, SpaceShip spaceShip)
+        public ParkingSpot FindFreeParkingSpot(SpaceShip spaceShip)
         {
             using SpacePortDBContext context = new SpacePortDBContext();
-            var result = context.ParkingSpots.Where(x => x.SpacePortID == spacePort.SpacePortID
+            var result = context.ParkingSpots.Where(x => x.SpacePortID == SpacePortID
                 && x.Occupied == false
                 && x.MaxLength >= spaceShip.Length);
 

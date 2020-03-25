@@ -15,16 +15,17 @@ namespace Spaceport
         static void Main(string[] args)
         {
             Console.ReadLine();
-            Styling.WelcomeToSpacePark();
+            Styling.PrintSpaceParkASCIILogo();
 
             Styling.InfoPrint("Fetching SpacePorts from Database");
             var spacePorts = GetSpacePortsAsync();
             Styling.InfoPrint("Fetching SpaceShips from Database");
             var spaceShips = GetShipsAsync();
 
-            new VisualProgress().AwaitAndShow(new Task[] { spaceShips, spacePorts });
+            new VisualProgressBar().AwaitAndShow(new Task[] { spaceShips, spacePorts });
 
-            Styling.InfoPrint("\nDone");
+            Styling.InfoPrint("\nDone", 2000);
+            Styling.ConsolePrint("\nWelcome to SpacePark!\nWhich of our stations would do like to park at?");
 
             var parkingSession = new ParkingSession()
                 .AtSpacePort(spacePorts.Result.Where(n => n.Name == "Coruscant").First())

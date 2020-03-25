@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Spaceport
 {
@@ -17,7 +18,7 @@ namespace Spaceport
 
         public bool IsPartOfStarwars()
         {
-            return APIConsumer.CharacterExists(Name);
+            return APIConsumer.SearchCharacterAsync(Name).Results.Any();
         }
     }
 }

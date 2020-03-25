@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Spaceport
 {
-    class VisualProgress
+    class VisualProgressBar
     {
         private Timer t; 
 

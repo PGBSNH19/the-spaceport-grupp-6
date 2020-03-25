@@ -23,15 +23,11 @@ namespace Spaceport
         public Invoice Invoice { get; set; }
         public int InvoiceID { get; set; }
 
-        public ParkingSession()
-        {
-            Styling.ConsolePrint("\nWelcome to SpacePark!\nWhich of our stations would do like to park at?");
-        }
-
         public ParkingSession AtSpacePort(SpacePort port)
         {
             SpacePort = port;
-            Styling.ConsolePrint($"\nThank you for choosing SpacePort {SpacePort.Name}.\nWe need some information about your ship.");
+            Styling.ConsolePrint($"\nThank you for choosing SpacePort {SpacePort.Name}.");
+            Styling.ConsolePrint("We need some information about your ship.");
             return this;
         }
 
@@ -55,7 +51,7 @@ namespace Spaceport
         public ParkingSession SetForShip(SpaceShip ship)
         {
             SpaceShip = ship;
-            Styling.ConsolePrint("\nYour ship has been registered.");
+            Styling.ConsolePrint($"\nYour ship has been registered with a length of {SpaceShip.Length} spacemeters.");
             return this;
         }
 
@@ -78,7 +74,7 @@ namespace Spaceport
 
         public ParkingSession FindFreeSpot()
         {
-            ParkingSpot = SpacePort.FindFreeParkingSpot(SpacePort, SpaceShip);
+            ParkingSpot = SpacePort.FindFreeParkingSpot(SpaceShip);
             if (ParkingSpot == null)
             {
                 Styling.ConsolePrint($"{"\nNo suitable parking spot found."}");
