@@ -12,7 +12,7 @@ namespace Spaceport
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ParkingSessionID { get; set; }
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [ForeignKey("ParkingSpotID")]
         public ParkingSpot ParkingSpot { get; set; }
         [Required]
         public virtual SpaceShip SpaceShip { get; set; }
@@ -22,6 +22,7 @@ namespace Spaceport
         public DateTime RegistrationTime { get; set; }
         [NotMapped]
         public SpacePort SpacePort { get; set; }
+        [ForeignKey("InvoiceID")]
         [Required]
         public Invoice Invoice { get; set; }
 
@@ -43,6 +44,8 @@ namespace Spaceport
             {
                 Paid = false
             };
+
+            Invoice.AddEntityToDatabase();
             return this;
         }
 
@@ -93,9 +96,11 @@ namespace Spaceport
         {
             using (var context = new SpacePortDBContext())
             {
-                context.ParkingSessions.Add(this);
+                var parkingSessionContext = context.Set<ParkingSession>();
+                parkingSessionContext.Add(this);
                 context.SaveChanges();
             }
+
             Console.WriteLine("\nParking session started");
             return this;
         }

@@ -32,6 +32,7 @@ namespace Spaceport
                 .ValidateParkingRight()
                 .FindFreeSpot()
                 .CreateInvoice()
+                .PayInvoice()
                 .StartParkingSession();
 
             Console.ReadLine();
