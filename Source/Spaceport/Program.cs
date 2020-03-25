@@ -31,6 +31,7 @@ namespace Spaceport
                 .SetForShip(spaceShips.Result.Where(s => s.Driver.Name == "Luke Skywalker").First())
                 .ValidateParkingRight()
                 .FindFreeSpot()
+                .CreateInvoice()
                 .StartParkingSession();
 
             Console.ReadLine();

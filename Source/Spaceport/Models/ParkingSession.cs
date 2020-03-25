@@ -39,6 +39,21 @@ namespace Spaceport
             return this;
         }
 
+        public ParkingSession CreateInvoice()
+        {
+            Invoice = new Invoice()
+            {
+                Paid = false
+            };
+            return this;
+        }
+
+        public ParkingSession PayInvoice()
+        {
+            Invoice.Pay(RegistrationTime);
+            return this;
+        }
+
         public ParkingSession SetForShip(SpaceShip ship)
         {
             SpaceShip = ship;
