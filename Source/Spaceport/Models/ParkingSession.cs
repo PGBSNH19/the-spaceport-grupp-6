@@ -29,34 +29,34 @@ namespace Spaceport
 
         public ParkingSession()
         {
-            Styling.ComputerPrint("\nWelcome to SpacePark!\nWhich of our stations would do like to park at?");
+            Styling.ConsolePrint("\nWelcome to SpacePark!\nWhich of our stations would do like to park at?");
         }
 
         public ParkingSession AtSpacePort(SpacePort port)
         {
             SpacePort = port;
-            Styling.ComputerPrint($"\nThank you for choosing SpacePort {SpacePort.Name}.\nWe need some information about your ship.");
+            Styling.ConsolePrint($"\nThank you for choosing SpacePort {SpacePort.Name}.\nWe need some information about your ship.");
             return this;
         }
 
         public ParkingSession SetForShip(SpaceShip ship)
         {
             SpaceShip = ship;
-            Styling.ComputerPrint("\nYour ship has been registered.");
+            Styling.ConsolePrint("\nYour ship has been registered.");
             return this;
         }
 
         public ParkingSession ValidateParkingRight()
         {
-            Styling.ComputerPrint("\nSpacePark is an exclusive SpacePort.\nWe need to run a background check on you.");
+            Styling.ConsolePrint("\nSpacePark is an exclusive SpacePort.\nWe need to run a background check on you.");
             ParkingToken = this.SpaceShip.Driver.IsPartOfStarwars();
             if (ParkingToken)
             {
-                Styling.ComputerPrint($"\n{SpaceShip.Driver.Name}, what a pleasure!\nYou have been given an access token to park.");
+                Styling.ConsolePrint($"\n{SpaceShip.Driver.Name}, what a pleasure!\nYou have been given an access token to park.");
             }
             else
             {
-                Styling.ComputerPrint($"\n{SpaceShip.Driver.Name} sorry SpacePark cannot let you park.");
+                Styling.ConsolePrint($"\n{SpaceShip.Driver.Name} sorry SpacePark cannot let you park.");
                 Console.ReadLine();
                 Environment.Exit(0);
             }
@@ -68,7 +68,7 @@ namespace Spaceport
             ParkingSpot = SpacePort.FindFreeParkingSpot(SpacePort, SpaceShip);
             if (ParkingSpot == null)
             {
-                Styling.ComputerPrint($"{"\nNo suitable parking spot found."}");
+                Styling.ConsolePrint($"{"\nNo suitable parking spot found."}");
                 Console.ReadLine();
                 Environment.Exit(0);
 

@@ -22,7 +22,7 @@ namespace Spaceport
             Styling.InfoPrint("Fetching SpaceShips from Database");
             var spaceShips = GetShipsAsync();
 
-            new VisualProgress().Show(new Task[] { spaceShips, spacePorts });
+            new VisualProgress().AwaitAndShow(new Task[] { spaceShips, spacePorts });
 
             Styling.InfoPrint("\nDone");
 
@@ -35,7 +35,6 @@ namespace Spaceport
 
             Console.ReadLine();
         }
-
 
         public static async Task<List<ParkingSpot>> GetParkingSpotsAsync()
         {

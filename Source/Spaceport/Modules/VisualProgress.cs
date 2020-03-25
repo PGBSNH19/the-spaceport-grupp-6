@@ -10,14 +10,14 @@ namespace Spaceport
     {
         private Timer t; 
 
-        public void Show(Task[] task)
+        public void AwaitAndShow(Task[] task)
         {
-            t = new Timer(DataGetWorkVisual, null, 0, 200);
+            t = new Timer(DataWorkVisual, null, 0, 200);
             Task.WaitAll(task);
             t.Dispose();
         }
         
-        internal void DataGetWorkVisual(object state)
+        internal void DataWorkVisual(object state)
         {
             Console.Write(".");
         }
