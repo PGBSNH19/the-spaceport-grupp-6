@@ -32,12 +32,12 @@ namespace Spaceport.Models
         //    context.SaveChanges();
         //}
 
-        //public void AddEntityToDatabase()
-        //{
-        //    using var context = new SpacePortDBContext();
-        //    var invoiceContext = context.Set<Invoice>();
-        //    invoiceContext.Add(this);
-        //    context.SaveChanges();
-        //}
+        public void AddEntityToDatabase()
+        {
+            using var context = new SpacePortDBContext();
+            var invoiceContext = context.Set<Invoice>();
+            invoiceContext.Add(this);
+            context.SaveChanges();
+        }
     }
 }

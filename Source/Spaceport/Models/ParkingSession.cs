@@ -11,20 +11,17 @@ namespace Spaceport
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ParkingSessionID { get; set; }
-        [Required]
-        [ForeignKey("ParkingSpotID")]
         public ParkingSpot ParkingSpot { get; set; }
-        [Required]
+        public int ParkingSpotID { get; set; }
         public virtual SpaceShip SpaceShip { get; set; }
-        [Required]
+        public int SpaceShipID { get; set; }
         public bool ParkingToken { get; set; }
-        [Required]
         public DateTime RegistrationTime { get; set; }
         [NotMapped]
         public SpacePort SpacePort { get; set; }
-        [Required]
-        [ForeignKey("InvoiceID")]
+        public int SpacePortID { get; set; }
         public Invoice Invoice { get; set; }
+        public int InvoiceID { get; set; }
 
         public ParkingSession()
         {
@@ -45,7 +42,7 @@ namespace Spaceport
                 Paid = false
             };
 
-            //Invoice.AddEntityToDatabase();
+            Invoice.AddEntityToDatabase();
             return this;
         }
 
@@ -93,17 +90,28 @@ namespace Spaceport
 
         public ParkingSession StartParkingSession()
         {
-            using (var context = new SpacePortDBContext())
-            {
-                //var parkingSessionContext = context.Set<ParkingSession>();
-                //parkingSessionContext.Add(this);
-                context.ParkingSessions.Add(this);
-
-                context.SaveChanges();
-            }
-
+            RegistrationTime = DateTime.Now;
+            AddEntityToDatabase();
             Console.WriteLine("\nParking session started");
             return this;
+        }
+
+        internal void AddEntityToDatabase()
+        {
+            using (var context = new SpacePortDBContext())
+            {
+                var session = new ParkingSession()
+                {
+                    ParkingToken = this.ParkingToken,
+                    ParkingSpotID = ParkingSpot.ParkingSpotID,
+                    SpaceShipID = SpaceShip.SpaceShipID,
+                    RegistrationTime = RegistrationTime,
+                    SpacePortID = this.SpacePort.SpacePortID,
+                    InvoiceID = this.Invoice.InvoiceID
+                };
+                context.ParkingSessions.Add(session);
+                context.SaveChanges();
+            }
         }
     }
 }

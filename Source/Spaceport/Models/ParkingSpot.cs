@@ -14,7 +14,8 @@ namespace Spaceport
         public int ParkingSpotID { get; set; }
         [Required]
         public int MaxLength { get; set; }
-        public SpacePort? SpacePort { get; set; }
+        public SpacePort SpacePort { get; set; }
+        public int SpacePortID { get; set; }
         public bool Occupied { get; set; }
     }
 }
