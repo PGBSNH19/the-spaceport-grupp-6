@@ -9,7 +9,12 @@ namespace Spaceport
 {
     public class APIConsumer
     {
-        public static bool GetCharacterAsync(string search)
+        public static bool CharacterExists(string search)
+        {
+            return SearchCharacterAsync(search).Results.Any();
+        }
+
+        public static CharacterDataRoot SearchCharacterAsync(string search)
         {
             var task = new RestClient("https://swapi.co/api/")
                 .ExecuteAsync<CharacterDataRoot>(
@@ -17,11 +22,11 @@ namespace Spaceport
                 );
 
             Styling.InfoPrint("\nWaiting for API response");
-            new VisualProgress().Show(new Task[] { task }); 
+            new VisualProgress().AwaitAndShow(new Task[] { task }); 
             Styling.InfoPrint("\nResults are in");
 
             var response = JsonConvert.DeserializeObject<CharacterDataRoot>(task.Result.Content);
-            return response.Results.Any();
+            return response;
         }
     }
 
@@ -35,6 +40,5 @@ namespace Spaceport
     {
         [JsonProperty("results")]
         public List<CharacterData> Results { get; set; }
-
     }
 }

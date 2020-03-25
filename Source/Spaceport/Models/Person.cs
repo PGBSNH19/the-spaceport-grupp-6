@@ -17,7 +17,7 @@ namespace Spaceport
 
         public bool IsPartOfStarwars()
         {
-            return APIConsumer.GetCharacterAsync(Name);
+            return APIConsumer.CharacterExists(Name);
         }
     }
 }
