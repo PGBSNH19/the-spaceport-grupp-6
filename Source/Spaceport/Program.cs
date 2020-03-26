@@ -15,12 +15,12 @@ namespace Spaceport
         static void Main(string[] args)
         {
             Console.ReadLine();
-            Styling.PrintSpaceParkASCIILogo();
+            //Styling.PrintSpaceParkASCIILogo();
 
             Styling.InfoPrint("Fetching SpacePorts from Database");
             var spacePorts = GetSpacePortsAsync();
             Styling.InfoPrint("Fetching SpaceShips from Database");
-            var spaceShips = GetShipsAsync();
+            var spaceShips = GetSpaceShipsAsync();
 
             new VisualProgressBar().AwaitAndShow(new Task[] { spaceShips, spacePorts });
 
@@ -39,28 +39,37 @@ namespace Spaceport
             Console.ReadLine();
         }
 
-        public static async Task<List<ParkingSpot>> GetParkingSpotsAsync()
+        public static Task<List<SpacePort>> GetSpacePortsAsync()
         {
-            using var context = new SpacePortDBContext();
-            return await context.ParkingSpots.ToListAsync();
+            return Task.Run(() => {
+                using var context = new SpacePortDBContext();
+                return context.SpacePorts.ToListAsync();
+            });
         }
 
-        public static async Task<List<SpacePort>> GetSpacePortsAsync()
+        public static Task<List<SpaceShip>> GetSpaceShipsAsync()
         {
-            using var context = new SpacePortDBContext();
-            return await context.SpacePorts.ToListAsync();
+            return Task.Run(() => {
+                using var context = new SpacePortDBContext();
+                return context.SpaceShips.Include(x => x.Driver).ToListAsync();
+            });
         }
 
-        public static async Task<List<Person>> GetPeopleAsync()
+        public static Task<List<ParkingSpot>> GetParkingSpotsAsync()
         {
-            using var context = new SpacePortDBContext();
-            return await context.Persons.ToListAsync();
+            return Task.Run(() => {
+                using var context = new SpacePortDBContext();
+                return context.ParkingSpots.ToListAsync();
+            });
         }
 
-        public static async Task<List<SpaceShip>> GetShipsAsync()
+        public static Task<List<Person>> GetPeopleAsync()
         {
-            using var context = new SpacePortDBContext();
-            return await context.SpaceShips.Include(x => x.Driver).ToListAsync();
+            return Task.Run(() => {
+                using var context = new SpacePortDBContext();
+                return context.Persons.ToListAsync();
+            });
         }
+
     }
 }

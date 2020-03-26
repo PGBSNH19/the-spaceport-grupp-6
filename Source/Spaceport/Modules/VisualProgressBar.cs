@@ -8,12 +8,12 @@ namespace Spaceport
 {
     class VisualProgressBar
     {
-        private Timer t; 
+        private Timer t;
 
         public void AwaitAndShow(Task[] task)
         {
             t = new Timer(DataWorkVisual, null, 0, 200);
-            Task.WaitAll(task);
+            Task.WaitAny(task);
             t.Dispose();
         }
         
