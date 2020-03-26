@@ -350,4 +350,3 @@ MigrationBackup/
 .ionide/
 
 Source/Spaceport/*.json
-/Source/Spaceport/*.json

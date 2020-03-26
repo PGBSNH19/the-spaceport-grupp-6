@@ -17,7 +17,7 @@ namespace Spaceport
                 );
 
             Styling.InfoPrint("\nWaiting for API response");
-            new VisualProgressBar().AwaitAndShow(new Task[] { task }); 
+            new VisualProgressBar().AwaitAndShow(new Task[] { task }).Wait(); 
             Styling.InfoPrint("\nResults are in!", 1000);
 
             return JsonConvert.DeserializeObject<CharacterDataRoot>(task.Result.Content);

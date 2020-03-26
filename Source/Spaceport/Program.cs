@@ -10,19 +10,17 @@ namespace Spaceport
 {
     class Program
     {
-        public static readonly string CONNECTION_STRING = "Server=den1.mssql8.gear.host;Database=spaceport6;Uid=spaceport6;Pwd=Xb7I3!HZ12_g;";
-
         static void Main(string[] args)
         {
             Console.ReadLine();
-            Styling.PrintSpaceParkASCIILogo();
+            //Styling.PrintSpaceParkASCIILogo();
 
             Styling.InfoPrint("Fetching SpacePorts from Database");
-            var spacePorts = GetSpacePortsAsync();
+            Task<List<SpacePort>> spacePorts; 
             Styling.InfoPrint("Fetching SpaceShips from Database");
-            var spaceShips = GetSpaceShipsAsync();
+            Task<List<SpaceShip>> spaceShips;
 
-            new VisualProgressBar().AwaitAndShow(new Task[] { spaceShips, spacePorts });
+            new VisualProgressBar().AwaitAndShow(new Task[] { spacePorts = GetSpacePortsAsync(), spaceShips = GetSpaceShipsAsync() }).Wait();
 
             Styling.InfoPrint("\nDone", 2000);
             Styling.ConsolePrint("\nWelcome to SpacePark!\nWhich of our stations would do like to park at?");
@@ -42,15 +40,18 @@ namespace Spaceport
         public async static Task<List<SpacePort>> GetSpacePortsAsync()
         {
             using var context = new SpacePortDBContext();
-            return await context.SpacePorts.ToListAsync();
+            var result = await context.SpacePorts.ToListAsync();
+            return result;
         }
 
         public async static Task<List<SpaceShip>> GetSpaceShipsAsync()
         {
-            using var context = new SpacePortDBContext();
-            return await context.SpaceShips.Include(x => x.Driver).ToListAsync();
+                using var context = new SpacePortDBContext();
+                var result = await context.SpaceShips.Include(x => x.Driver).ToListAsync();
+                return result;
         }
 
+        [Obsolete("Method not in use")]
         public static Task<List<ParkingSpot>> GetParkingSpotsAsync()
         {
             return Task.Run(() => {
@@ -59,6 +60,7 @@ namespace Spaceport
             });
         }
 
+        [Obsolete("Method not in use")]
         public static Task<List<Person>> GetPeopleAsync()
         {
             return Task.Run(() => {

@@ -10,10 +10,10 @@ namespace Spaceport
     {
         private Timer t;
 
-        public void AwaitAndShow(Task[] task)
+        public async Task AwaitAndShow(Task[] task)
         {
             t = new Timer(DataWorkVisual, null, 0, 200);
-            Task.WaitAny(task);
+            await Task.WhenAll(task);
             t.Dispose();
         }
         

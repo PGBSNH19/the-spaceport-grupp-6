@@ -22,7 +22,7 @@ namespace Spaceport
                 .Build();
 
             optionsBuilder.EnableSensitiveDataLogging(true);
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnectionString"));
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
