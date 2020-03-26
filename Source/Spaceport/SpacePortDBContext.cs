@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Spaceport.Models;
+using System.IO;
 
 namespace Spaceport
 {
@@ -14,8 +16,13 @@ namespace Spaceport
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) 
         {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
             optionsBuilder.EnableSensitiveDataLogging(true);
-            optionsBuilder.UseSqlServer(Program.CONNECTION_STRING);
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnectionString"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Spaceport
 {
@@ -15,7 +15,7 @@ namespace Spaceport
         static void Main(string[] args)
         {
             Console.ReadLine();
-            //Styling.PrintSpaceParkASCIILogo();
+            Styling.PrintSpaceParkASCIILogo();
 
             Styling.InfoPrint("Fetching SpacePorts from Database");
             var spacePorts = GetSpacePortsAsync();
@@ -29,7 +29,7 @@ namespace Spaceport
 
             var parkingSession = new ParkingSession()
                 .AtSpacePort(spacePorts.Result.Where(n => n.Name == "Coruscant").First())
-                .SetForShip(spaceShips.Result.Where(s => s.Driver.Name == "Luke Skywalker").First())
+                .SetForShip(spaceShips.Result.Where(s => s.Driver.Name == "Donald Trump").First())
                 .ValidateParkingRight()
                 .FindFreeSpot()
                 .CreateInvoice()
@@ -39,20 +39,16 @@ namespace Spaceport
             Console.ReadLine();
         }
 
-        public static Task<List<SpacePort>> GetSpacePortsAsync()
+        public async static Task<List<SpacePort>> GetSpacePortsAsync()
         {
-            return Task.Run(() => {
-                using var context = new SpacePortDBContext();
-                return context.SpacePorts.ToListAsync();
-            });
+            using var context = new SpacePortDBContext();
+            return await context.SpacePorts.ToListAsync();
         }
 
-        public static Task<List<SpaceShip>> GetSpaceShipsAsync()
+        public async static Task<List<SpaceShip>> GetSpaceShipsAsync()
         {
-            return Task.Run(() => {
-                using var context = new SpacePortDBContext();
-                return context.SpaceShips.Include(x => x.Driver).ToListAsync();
-            });
+            using var context = new SpacePortDBContext();
+            return await context.SpaceShips.Include(x => x.Driver).ToListAsync();
         }
 
         public static Task<List<ParkingSpot>> GetParkingSpotsAsync()
