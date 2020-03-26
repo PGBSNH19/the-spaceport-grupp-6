@@ -13,7 +13,7 @@ namespace Spaceport
         static void Main(string[] args)
         {
             Console.ReadLine();
-            //Styling.PrintSpaceParkASCIILogo();
+            Styling.PrintSpaceParkASCIILogo();
 
             Styling.InfoPrint("Fetching SpacePorts from Database");
             Task<List<SpacePort>> spacePorts; 
