@@ -55,8 +55,9 @@ namespace Spaceport
             return this;
         }
 
-        public ParkingSession ValidateParkingRight()
+        public ParkingSession ValidateParkingRight(Person driver)
         {
+            SpaceShip.Driver = driver;
             Styling.ConsolePrint("\nSpacePark is an exclusive SpacePort.\nWe need to run a background check on you.");
             ParkingToken = this.SpaceShip.Driver.IsPartOfStarwars();
             if (ParkingToken)

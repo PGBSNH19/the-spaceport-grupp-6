@@ -35,8 +35,8 @@ namespace Spaceport
 
             var parkingSession = new ParkingSession().AtSpacePort(stationChoice);
 
-            parkingSession.SetForShip(spaceShips.Result.Where(s => s.Driver.Name == "Luke Skywalker").First())
-            .ValidateParkingRight()
+            parkingSession.SetForShip(spaceShipChoice)
+            .ValidateParkingRight(personChoice)
             .FindFreeSpot()
             .CreateInvoice()
             .PayInvoice()
@@ -97,13 +97,13 @@ namespace Spaceport
 
         public static SpacePort GetSpacePortChoice()
         {
-            Styling.ConsolePrint("\nWhich of our stations would do like to park at?");
-            var choice = SpacePortExists(Console.ReadLine());
+            Styling.ConsolePrint("\nEnter Id of the station you would do like to park at: ");
+            var choice = SpacePortExists(int.Parse(Console.ReadLine()));
             while (choice == null)
             {
                 Styling.ConsolePrint("Sorry that spacePort doesn't exist.");
                 Styling.ConsolePrint("\nWhich of our stations would do like to park at?");
-                choice = SpacePortExists(Console.ReadLine());
+                choice = SpacePortExists(int.Parse(Console.ReadLine()));
             }
             if (choice.HasAvailableParkingspots())
             {
@@ -112,10 +112,10 @@ namespace Spaceport
             return choice;
         }
 
-        internal static SpacePort SpacePortExists(string choice)
+        internal static SpacePort SpacePortExists(int choice)
         {
             using var context = new SpacePortDBContext();
-            var result = context.SpacePorts.Where(x => x.Name == choice);
+            var result = context.SpacePorts.Where(x => x.SpacePortID == choice);
             return (result.Count() == 0) ? null : result.First();
         }
 
