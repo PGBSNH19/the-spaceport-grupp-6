@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Spaceport
@@ -14,5 +15,13 @@ namespace Spaceport
         public SpacePort SpacePort { get; set; }
         public int SpacePortID { get; set; }
         public bool Occupied { get; set; }
+
+        internal void UpdateEntityInDatabase()
+        {
+            using var context = new SpacePortDBContext();
+            var invoiceContext = context.Set<ParkingSpot>();
+            invoiceContext.Update(this);
+            context.SaveChanges();
+        }
     }
 }

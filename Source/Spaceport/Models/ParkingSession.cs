@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Spaceport
 {
@@ -75,13 +76,16 @@ namespace Spaceport
 
         public ParkingSession FindFreeSpot()
         {
-            ParkingSpot = SpacePort.FindFreeParkingSpot(SpaceShip);
-            if (ParkingSpot == null)
+            var parkingSpot = SpacePort.FindFreeParkingSpot(SpaceShip);
+            if (parkingSpot.Count() <= 0)
             {
-                Styling.ConsolePrint($"{"\nNo suitable parking spot found."}");
+                Styling.ConsolePrint($"{"\nNo suitable parking spot found to support ship length."}");
                 Console.ReadLine();
                 Environment.Exit(0);
             }
+            ParkingSpot = parkingSpot.First();
+            ParkingSpot.Occupied = true;
+            ParkingSpot.UpdateEntityInDatabase();
             return this;
         }
 

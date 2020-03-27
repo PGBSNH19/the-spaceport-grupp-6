@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -14,16 +15,12 @@ namespace Spaceport
         [Required]
         public string Name { get; set; }
 
-        public ParkingSpot FindFreeParkingSpot(SpaceShip spaceShip)
+        public List<ParkingSpot> FindFreeParkingSpot(SpaceShip spaceShip)
         {
             using SpacePortDBContext context = new SpacePortDBContext();
-            var result = context.ParkingSpots.Where(x => x.SpacePortID == SpacePortID);
-            var query = from PSession in context.ParkingSessions
-                        join PSpot in context.ParkingSpots
-                        on PSession.ParkingSpotID equals PSpot.ParkingSpotID
-                        select new { ParkingSession = PSession, ParkingSpot = PSpot };
-
-            return (result.Count() == 0) ? null : result.First();
+            var result = context.ParkingSpots
+                .Where(x => x.SpacePortID == SpacePortID && x.Occupied == false && x.MaxLength >= spaceShip.Length).ToList();
+            return result;
         }
 
         public bool HasAvailableParkingspots()

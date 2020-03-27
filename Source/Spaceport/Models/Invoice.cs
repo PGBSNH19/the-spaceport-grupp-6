@@ -11,6 +11,9 @@ namespace Spaceport.Models
         public int InvoiceID { get; set; }
         public bool Paid { get; set; }
         public int AmountPaid { get; set; }
+        public int PersonID { get; set; }
+        [NotMapped]
+        public Person Person  { get; set; }
 
         private const int costPerHour = 100;
 
@@ -21,16 +24,16 @@ namespace Spaceport.Models
             AmountPaid = amountToPay;
             Paid = true;
             Console.WriteLine("\nInvoice Paid");
-            //UpdateEntityInDatabase();
+            UpdateEntityInDatabase();
         }
 
-        //internal void UpdateEntityInDatabase()
-        //{
-        //    using var context = new SpacePortDBContext();
-        //    var invoiceContext = context.Set<Invoice>();
-        //    invoiceContext.Update(this);
-        //    context.SaveChanges();
-        //}
+        internal void UpdateEntityInDatabase()
+        {
+            using var context = new SpacePortDBContext();
+            var invoiceContext = context.Set<Invoice>();
+            invoiceContext.Update(this);
+            context.SaveChanges();
+        }
 
         public void AddEntityToDatabase()
         {
