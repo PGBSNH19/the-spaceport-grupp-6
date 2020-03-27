@@ -26,8 +26,7 @@ namespace Spaceport
         public ParkingSession AtSpacePort(SpacePort port)
         {
             SpacePort = port;
-            Styling.ConsolePrint($"\nThank you for choosing SpacePort {SpacePort.Name}.");
-            Styling.ConsolePrint("We need some information about your ship.");
+            Styling.ConsolePrint($"Thank you for choosing SpacePort {SpacePort.Name}.");
             return this;
         }
 
@@ -37,23 +36,17 @@ namespace Spaceport
             {
                 Paid = false,
                 PersonID = SpaceShip.DriverPersonID,
-                RegistrationTime = DateTime.Now
+                RegistrationTime = DateTime.Now,
+                ParkingSpotID = ParkingSpotID
             };
-
+            Styling.ConsolePrint("\nInvoice created.");
             Invoice.AddEntityToDatabase();
-            return this;
-        }
-
-        public ParkingSession PayInvoice()
-        {
-            Invoice.Pay();
             return this;
         }
 
         public ParkingSession SetForShip(SpaceShip ship)
         {
             SpaceShip = ship;
-            Styling.ConsolePrint($"\nYour ship has been registered with a length of {SpaceShip.Length} spacemeters.");
             return this;
         }
 
@@ -86,6 +79,7 @@ namespace Spaceport
             }
             ParkingSpot = parkingSpot.First();
             ParkingSpot.Occupied = true;
+            ParkingSpotID = ParkingSpot.ParkingSpotID;
             ParkingSpot.UpdateEntityInDatabase();
             return this;
         }
@@ -93,25 +87,23 @@ namespace Spaceport
         public ParkingSession StartParkingSession()
         {
             AddEntityToDatabase();
-            Console.WriteLine("\nParking session started");
+            Styling.ConsolePrint("\nParking session started");
             return this;
         }
 
         internal void AddEntityToDatabase()
         {
-            using (var context = new SpacePortDBContext())
+            using var context = new SpacePortDBContext();
+            var session = new ParkingSession()
             {
-                var session = new ParkingSession()
-                {
-                    ParkingToken = this.ParkingToken,
-                    ParkingSpotID = ParkingSpot.ParkingSpotID,
-                    SpaceShipID = SpaceShip.SpaceShipID,
-                    SpacePortID = this.SpacePort.SpacePortID,
-                    InvoiceID = this.Invoice.InvoiceID
-                };
-                context.ParkingSessions.Add(session);
-                context.SaveChanges();
-            }
+                ParkingToken = this.ParkingToken,
+                ParkingSpotID = ParkingSpot.ParkingSpotID,
+                SpaceShipID = SpaceShip.SpaceShipID,
+                SpacePortID = this.SpacePort.SpacePortID,
+                InvoiceID = this.Invoice.InvoiceID
+            };
+            context.ParkingSessions.Add(session);
+            context.SaveChanges();
         }
     }
 }

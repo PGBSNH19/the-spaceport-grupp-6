@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Spaceport.Models
@@ -15,16 +16,18 @@ namespace Spaceport.Models
         public int PersonID { get; set; }
         public Person Person  { get; set; }
         public DateTime RegistrationTime { get; set; }
+        public int ParkingSpotID { get; set; }
+        [NotMapped]
+        public ParkingSpot ParkingSpot { get; set; }
 
-        private const int COST_PER_HOUR = 100;
+        private const int COST_PER_HOUR = 1000;
 
         public void Pay()
         {
             TimeSpan timeDifference = DateTime.Now - RegistrationTime;
-            int amountToPay = timeDifference.Hours * COST_PER_HOUR;
+            int amountToPay = timeDifference.Seconds * ((COST_PER_HOUR /60)/60);
             AmountPaid = amountToPay;
             Paid = true;
-            Console.WriteLine("\nInvoice Paid");
             UpdateEntityInDatabase();
         }
 

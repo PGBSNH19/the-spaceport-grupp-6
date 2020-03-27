@@ -8,7 +8,7 @@ namespace Spaceport
 {
     public class Styling
     {
-        public static void InfoPrint(string s, int milliSeconds = 0)
+        public static void InfoPrint(string s, int milliSeconds = 500)
         {
             for (int i = 0; i < s.Length; i++)
             {
@@ -19,7 +19,7 @@ namespace Spaceport
             Thread.Sleep(milliSeconds);
         }
 
-        public static void ConsolePrint(string s, int milliSeconds = 0)
+        public static void ConsolePrint(string s, int milliSeconds = 1000)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             for (int i = 0; i < s.Length; i++)

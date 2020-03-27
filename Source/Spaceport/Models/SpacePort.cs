@@ -26,13 +26,7 @@ namespace Spaceport
         public bool HasAvailableParkingspots()
         {
             using var context = new SpacePortDBContext();
-            var occupiedSpots = context.ParkingSessions.Where(x => !x.Invoice.Paid && x.ParkingSpot.SpacePortID == SpacePortID).Select(x => x.ParkingSpot).ToList();
-            var parkingSpots = context.ParkingSpots.Where(x => x.SpacePortID == SpacePortID).ToList();
-
-            foreach (ParkingSpot occupiedSpot in occupiedSpots)
-            {
-                parkingSpots.RemoveAll(x => x.ParkingSpotID == occupiedSpot.ParkingSpotID);
-            }
+            var parkingSpots = context.ParkingSpots.Where(x => x.SpacePortID == SpacePortID && x.Occupied == false);
 
             return parkingSpots.Count() > 0;
         }

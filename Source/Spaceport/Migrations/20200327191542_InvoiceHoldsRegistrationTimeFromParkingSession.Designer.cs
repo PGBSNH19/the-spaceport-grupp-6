@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Spaceport;
 
 namespace Spaceport.Migrations
 {
     [DbContext(typeof(SpacePortDBContext))]
-    partial class SpacePortDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200327191542_InvoiceHoldsRegistrationTimeFromParkingSession")]
+    partial class InvoiceHoldsRegistrationTimeFromParkingSession
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,9 +33,6 @@ namespace Spaceport.Migrations
 
                     b.Property<bool>("Paid")
                         .HasColumnType("bit");
-
-                    b.Property<int>("ParkingSpotID")
-                        .HasColumnType("int");
 
                     b.Property<int>("PersonID")
                         .HasColumnType("int");
