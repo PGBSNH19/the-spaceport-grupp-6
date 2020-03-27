@@ -17,9 +17,11 @@ namespace Spaceport
         public ParkingSpot FindFreeParkingSpot(SpaceShip spaceShip)
         {
             using SpacePortDBContext context = new SpacePortDBContext();
-            var result = context.ParkingSpots.Where(x => x.SpacePortID == SpacePortID
-                && x.Occupied == false
-                && x.MaxLength >= spaceShip.Length);
+            var result = context.ParkingSpots.Where(x => x.SpacePortID == SpacePortID);
+            var query = from PSession in context.ParkingSessions
+                        join PSpot in context.ParkingSpots
+                        on PSession.ParkingSpotID equals PSpot.ParkingSpotID
+                        select new { ParkingSession = PSession, ParkingSpot = PSpot };
 
             return (result.Count() == 0) ? null : result.First();
         }
