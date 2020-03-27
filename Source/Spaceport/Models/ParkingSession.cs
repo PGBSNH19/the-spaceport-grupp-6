@@ -17,7 +17,6 @@ namespace Spaceport
         public virtual SpaceShip SpaceShip { get; set; }
         public int SpaceShipID { get; set; }
         public bool ParkingToken { get; set; }
-        public DateTime RegistrationTime { get; set; }
         [NotMapped]
         public SpacePort SpacePort { get; set; }
         public int SpacePortID { get; set; }
@@ -36,7 +35,9 @@ namespace Spaceport
         {
             Invoice = new Invoice()
             {
-                Paid = false
+                Paid = false,
+                PersonID = SpaceShip.DriverPersonID,
+                RegistrationTime = DateTime.Now
             };
 
             Invoice.AddEntityToDatabase();
@@ -45,7 +46,7 @@ namespace Spaceport
 
         public ParkingSession PayInvoice()
         {
-            Invoice.Pay(RegistrationTime);
+            Invoice.Pay();
             return this;
         }
 
@@ -91,7 +92,6 @@ namespace Spaceport
 
         public ParkingSession StartParkingSession()
         {
-            RegistrationTime = DateTime.Now;
             AddEntityToDatabase();
             Console.WriteLine("\nParking session started");
             return this;
@@ -106,7 +106,6 @@ namespace Spaceport
                     ParkingToken = this.ParkingToken,
                     ParkingSpotID = ParkingSpot.ParkingSpotID,
                     SpaceShipID = SpaceShip.SpaceShipID,
-                    RegistrationTime = RegistrationTime,
                     SpacePortID = this.SpacePort.SpacePortID,
                     InvoiceID = this.Invoice.InvoiceID
                 };

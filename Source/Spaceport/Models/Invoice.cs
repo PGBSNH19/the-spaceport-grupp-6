@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Spaceport.Models
 {
@@ -12,15 +13,15 @@ namespace Spaceport.Models
         public bool Paid { get; set; }
         public int AmountPaid { get; set; }
         public int PersonID { get; set; }
-        [NotMapped]
         public Person Person  { get; set; }
+        public DateTime RegistrationTime { get; set; }
 
-        private const int costPerHour = 100;
+        private const int COST_PER_HOUR = 100;
 
-        public void Pay(DateTime registrationTime)
+        public void Pay()
         {
-            TimeSpan timeDifference = DateTime.Now - registrationTime;
-            int amountToPay = timeDifference.Hours * costPerHour;
+            TimeSpan timeDifference = DateTime.Now - RegistrationTime;
+            int amountToPay = timeDifference.Hours * COST_PER_HOUR;
             AmountPaid = amountToPay;
             Paid = true;
             Console.WriteLine("\nInvoice Paid");
@@ -41,6 +42,12 @@ namespace Spaceport.Models
             var invoiceContext = context.Set<Invoice>();
             invoiceContext.Add(this);
             context.SaveChanges();
+        }
+
+        public static Invoice UnpaidInvoiceFromPerson(Person person)
+        {
+            var context = new SpacePortDBContext();
+            return context.Invoices.FirstOrDefault(x => !x.Paid && x.PersonID == person.PersonID);
         }
     }
 }

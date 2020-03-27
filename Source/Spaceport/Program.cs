@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Spaceport.Models;
 
 namespace Spaceport
 {
@@ -27,6 +28,8 @@ namespace Spaceport
             var personChoice = GetPersonChoice();
             Styling.ConsolePrint(personChoice.Name);
 
+            CheckForUnpaidInvoice(personChoice);
+
             var spaceShipChoice = GetSpaceShipChoice(personChoice);
             Styling.ConsolePrint($"SpaceShipID: {spaceShipChoice.SpaceShipID} is of length {spaceShipChoice.Length} spacemeteres and registered under {personChoice.Name}");
 
@@ -43,6 +46,28 @@ namespace Spaceport
             .StartParkingSession();
 
             Console.ReadLine();
+        }
+
+        private static void CheckForUnpaidInvoice(Person person)
+        {
+            Invoice invoice = Invoice.UnpaidInvoiceFromPerson(person);
+            while (invoice != null)
+            {
+                Styling.ConsolePrint("\nUnpaid invoice detected!");
+                Styling.ConsolePrint("\nWould you like to pay? [Y/N]");
+                
+                var userInput = Console.ReadLine();
+
+                if (userInput.ToLower() == "n")
+                {
+                    CheckForUnpaidInvoice(person);
+                }
+                else if (userInput.ToLower() == "y")
+                {
+                    invoice.Pay();
+                    return;
+                }
+            }
         }
 
         private static void DisplaySpacePorts()
