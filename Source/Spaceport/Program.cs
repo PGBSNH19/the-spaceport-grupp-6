@@ -13,7 +13,7 @@ namespace Spaceport
         static void Main(string[] args)
         {
             Console.ReadLine();
-            Styling.PrintSpaceParkASCIILogo();
+            //Styling.PrintSpaceParkASCIILogo();
 
             Styling.InfoPrint("Fetching SpacePorts from Database");
             Task<List<SpacePort>> spacePorts; 
@@ -22,19 +22,56 @@ namespace Spaceport
 
             new VisualProgressBar().AwaitAndShow(new Task[] { spacePorts = GetSpacePortsAsync(), spaceShips = GetSpaceShipsAsync() }).Wait();
 
-            Styling.InfoPrint("\nDone", 2000);
-            Styling.ConsolePrint("\nWelcome to SpacePark!\nWhich of our stations would do like to park at?");
+            Styling.InfoPrint("\nDone");
+            Styling.ConsolePrint("\nWelcome to SpacePark!");
 
-            var parkingSession = new ParkingSession()
-                .AtSpacePort(spacePorts.Result.Where(n => n.Name == "Coruscant").First())
-                .SetForShip(spaceShips.Result.Where(s => s.Driver.Name == "Donald Trump").First())
-                .ValidateParkingRight()
-                .FindFreeSpot()
-                .CreateInvoice()
-                .PayInvoice()
-                .StartParkingSession();
+            var stationChoice = GetSpacePortChoice();
+            
+
+            var parkingSession = new ParkingSession().AtSpacePort(stationChoice);
+
+
+                //parkingSession.SetForShip(spaceShips.Result.Where(s => s.Driver.Name == "Donald Trump").First())
+                //.ValidateParkingRight()
+                //.FindFreeSpot()
+                //.CreateInvoice()
+                //.PayInvoice()
+                //.StartParkingSession();
 
             Console.ReadLine();
+        }
+
+        public static SpacePort GetSpacePortChoice()
+        {
+            Styling.ConsolePrint("\nWhich of our stations would do like to park at?");
+            var choice = SpacePortExists(Console.ReadLine());
+            while (choice == null)
+            {
+                Styling.ConsolePrint("Sorry that spacePort doesn't exist.");
+                Styling.ConsolePrint("\nWhich of our stations would do like to park at?");
+                choice = SpacePortExists(Console.ReadLine());
+            }
+            if (SpacePortIsFull(choice))
+            {
+
+            }
+            return choice;
+        }
+
+        private static bool SpacePortIsFull(SpacePort choice)
+        {
+            using var context = new SpacePortDBContext();
+            var parkingSpots = context.ParkingSpots.Where(x => x.SpacePortID == choice.SpacePortID).ToList();
+            var availableSpots = context.ParkingSessions.Where(x => x.SpacePortID == choice.SpacePortID).ForEachAsync(x => x.);
+            //result.ForEach(r => Console.WriteLine(choice.Name + " holds following parkingspots: " + r.ParkingSpotID));
+            return true;
+        }
+
+        internal static SpacePort SpacePortExists(string choice)
+        {
+            using var context = new SpacePortDBContext();
+            var result = context.SpacePorts.Where(x => x.Name == choice);
+            return (result.Count() == 0) ? null : result.First();
         }
 
         public async static Task<List<SpacePort>> GetSpacePortsAsync()

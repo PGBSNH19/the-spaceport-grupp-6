@@ -19,7 +19,7 @@ namespace Spaceport
             Thread.Sleep(milliSeconds);
         }
 
-        public static void ConsolePrint(string s, int milliSeconds = 2000)
+        public static void ConsolePrint(string s, int milliSeconds = 0)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             for (int i = 0; i < s.Length; i++)
