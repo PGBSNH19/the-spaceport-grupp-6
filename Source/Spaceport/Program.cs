@@ -26,6 +26,9 @@ namespace Spaceport
             var personChoice = GetPersonChoice();
             Styling.ConsolePrint(personChoice.Name);
 
+            var spaceShipChoice = GetSpaceShipChoice(personChoice);
+            Styling.ConsolePrint($"SpaceShipID: {spaceShipChoice.SpaceShipID} is of length {spaceShipChoice.Length} spacemeteres and registered under {personChoice.Name}");
+
             var stationChoice = GetSpacePortChoice();
             
 
@@ -42,6 +45,42 @@ namespace Spaceport
             Console.ReadLine();
         }
 
+        private static SpaceShip GetSpaceShipChoice(Person driver)
+        {
+            if (SpaceShip.EntityExistsInDatabase(driver))
+            {
+                Styling.ConsolePrint("\nFound a ship registered with your name.");
+            }
+            else
+            {
+
+                Styling.ConsolePrint("\nNo ships matching under your name.");
+                string length = String.Empty;
+                while (int.TryParse(length, out int result) == false)
+                {
+                    Styling.ConsolePrint("What's the length of your ship? (In spacemeters)");
+                    length = Console.ReadLine();
+                }
+
+                SpaceShip.AddEntityToDatabase(driver, int.Parse(length));
+            }
+
+            return SpaceShip.GetEntityFromDatabase(driver);
+        }
+
+        public static Person GetPersonChoice()
+        {
+            Styling.ConsolePrint("\nWhat's your SSN? ");
+            var ssn = Console.ReadLine();
+            if (!Person.EntityExistsInDatabase(ssn))
+            {
+                Styling.ConsolePrint("\nEnter your full name: ");
+                var name = Console.ReadLine();
+                Person.AddEntityToDatabase(ssn, name);
+            }
+            return Person.GetEntityFromDatabase(ssn);
+        }
+
         public static SpacePort GetSpacePortChoice()
         {
             Styling.ConsolePrint("\nWhich of our stations would do like to park at?");
@@ -52,38 +91,11 @@ namespace Spaceport
                 Styling.ConsolePrint("\nWhich of our stations would do like to park at?");
                 choice = SpacePortExists(Console.ReadLine());
             }
-            if (SpacePortIsFull(choice))
+            if (SpacePort.SpacePortIsFull(choice))
             {
-
+                // Do something here?
             }
             return choice;
-        }
-
-        public static Person GetPersonChoice()
-        {
-            Styling.ConsolePrint("\nWhat's your SSN? ");
-            var ssn = Console.ReadLine();
-            if (!Person.PersonExistsInDatabase(ssn))
-            {
-                Styling.ConsolePrint("\nEnter your full name: ");
-                var name = Console.ReadLine();
-                Person.AddEntityToDatabase(ssn, name);
-            }
-            return Person.GetPersonFromDatabase(ssn);
-        }
-
-        private static bool SpacePortIsFull(SpacePort choice)
-        {
-            using var context = new SpacePortDBContext();
-            var occupiedSpots = context.ParkingSessions.Where(x => !x.Invoice.Paid && x.ParkingSpot.SpacePortID == choice.SpacePortID).Select(x => x.ParkingSpot).ToList();
-            var parkingSpots = context.ParkingSpots.Where(x => x.SpacePortID == choice.SpacePortID).ToList();
-
-            foreach (ParkingSpot occupiedSpot in occupiedSpots)
-            {
-                parkingSpots.RemoveAll(x => x.ParkingSpotID == occupiedSpot.ParkingSpotID);
-            }
-
-            return parkingSpots.Count() > 0;
         }
 
         internal static SpacePort SpacePortExists(string choice)
@@ -103,7 +115,7 @@ namespace Spaceport
         public async static Task<List<SpaceShip>> GetSpaceShipsAsync()
         {
                 using var context = new SpacePortDBContext();
-                var result = await context.SpaceShips.Include(x => x.Driver).ToListAsync();
+                var result = await context.SpaceShips.ToListAsync();
                 return result;
         }
 

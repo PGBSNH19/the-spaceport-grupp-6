@@ -22,5 +22,19 @@ namespace Spaceport
 
             return (result.Count() == 0) ? null : result.First();
         }
+
+        public static bool SpacePortIsFull(SpacePort choice)
+        {
+            using var context = new SpacePortDBContext();
+            var occupiedSpots = context.ParkingSessions.Where(x => !x.Invoice.Paid && x.ParkingSpot.SpacePortID == choice.SpacePortID).Select(x => x.ParkingSpot).ToList();
+            var parkingSpots = context.ParkingSpots.Where(x => x.SpacePortID == choice.SpacePortID).ToList();
+
+            foreach (ParkingSpot occupiedSpot in occupiedSpots)
+            {
+                parkingSpots.RemoveAll(x => x.ParkingSpotID == occupiedSpot.ParkingSpotID);
+            }
+
+            return parkingSpots.Count() > 0;
+        }
     }
 }

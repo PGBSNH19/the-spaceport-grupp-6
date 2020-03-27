@@ -30,6 +30,12 @@
     <Compile Remove="Migrations\20200325084412_Invoice_added.Designer.cs" />
     <Compile Remove="Migrations\20200325084626_Invoice_added.cs" />
     <Compile Remove="Migrations\20200325084626_Invoice_added.Designer.cs" />
+    <Compile Remove="Migrations\20200327122256_AddedDriverIDToSpaceShip.cs" />
+    <Compile Remove="Migrations\20200327122256_AddedDriverIDToSpaceShip.Designer.cs" />
+    <Compile Remove="Migrations\20200327122448_AddedDriverIDToSpaceShip.cs" />
+    <Compile Remove="Migrations\20200327122448_AddedDriverIDToSpaceShip.Designer.cs" />
+    <Compile Remove="Migrations\20200327122602_AddedDriverIDToSpaceShip.cs" />
+    <Compile Remove="Migrations\20200327122602_AddedDriverIDToSpaceShip.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

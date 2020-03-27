@@ -25,7 +25,7 @@ namespace Spaceport
             return APIConsumer.SearchCharacterAsync(Name).Results.Any();
         }
 
-        internal static bool PersonExistsInDatabase(string ssn)
+        internal static bool EntityExistsInDatabase(string ssn)
         {
             using var context = new SpacePortDBContext();
             return context.Persons.Any(x => x.SSN == ssn);
@@ -40,12 +40,11 @@ namespace Spaceport
             };
 
             using var context = new SpacePortDBContext();
-            var personContext = context.Set<Person>();
-            personContext.Add(myperson);
+            context.Set<Person>().Add(myperson);
             context.SaveChanges();
         }
 
-        internal static Person GetPersonFromDatabase(string ssn)
+        internal static Person GetEntityFromDatabase(string ssn)
         {
             using SpacePortDBContext context = new SpacePortDBContext();
             var person = context.Persons.Where(x => x.SSN == ssn).First();
