@@ -31,12 +31,12 @@ namespace Spaceport
             var parkingSession = new ParkingSession().AtSpacePort(stationChoice);
 
 
-                //parkingSession.SetForShip(spaceShips.Result.Where(s => s.Driver.Name == "Donald Trump").First())
-                //.ValidateParkingRight()
-                //.FindFreeSpot()
-                //.CreateInvoice()
-                //.PayInvoice()
-                //.StartParkingSession();
+            parkingSession.SetForShip(spaceShips.Result.Where(s => s.Driver.Name == "Luke Skywalker").First())
+            .ValidateParkingRight()
+            .FindFreeSpot()
+            .CreateInvoice()
+            .PayInvoice()
+            .StartParkingSession();
 
             Console.ReadLine();
         }
@@ -61,10 +61,15 @@ namespace Spaceport
         private static bool SpacePortIsFull(SpacePort choice)
         {
             using var context = new SpacePortDBContext();
+            var occupiedSpots = context.ParkingSessions.Where(x => !x.Invoice.Paid && x.ParkingSpot.SpacePortID == choice.SpacePortID).Select(x => x.ParkingSpot).ToList();
             var parkingSpots = context.ParkingSpots.Where(x => x.SpacePortID == choice.SpacePortID).ToList();
-            var availableSpots = context.ParkingSessions.Where(x => x.SpacePortID == choice.SpacePortID).ForEachAsync(x => x.);
-            //result.ForEach(r => Console.WriteLine(choice.Name + " holds following parkingspots: " + r.ParkingSpotID));
-            return true;
+
+            foreach (ParkingSpot occupiedSpot in occupiedSpots)
+            {
+                parkingSpots.RemoveAll(x => x.ParkingSpotID == occupiedSpot.ParkingSpotID);
+            }
+
+            return parkingSpots.Count() > 0;
         }
 
         internal static SpacePort SpacePortExists(string choice)
