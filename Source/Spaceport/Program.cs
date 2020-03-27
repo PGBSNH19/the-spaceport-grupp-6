@@ -1,10 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Spaceport
 {
@@ -24,6 +22,9 @@ namespace Spaceport
 
             Styling.InfoPrint("\nDone");
             Styling.ConsolePrint("\nWelcome to SpacePark!");
+
+            var personChoice = GetPersonChoice();
+            Styling.ConsolePrint(personChoice.Name);
 
             var stationChoice = GetSpacePortChoice();
             
@@ -56,6 +57,19 @@ namespace Spaceport
 
             }
             return choice;
+        }
+
+        public static Person GetPersonChoice()
+        {
+            Styling.ConsolePrint("\nWhat's your SSN? ");
+            var ssn = Console.ReadLine();
+            if (!Person.PersonExistsInDatabase(ssn))
+            {
+                Styling.ConsolePrint("\nEnter your full name: ");
+                var name = Console.ReadLine();
+                Person.AddEntityToDatabase(ssn, name);
+            }
+            return Person.GetPersonFromDatabase(ssn);
         }
 
         private static bool SpacePortIsFull(SpacePort choice)
