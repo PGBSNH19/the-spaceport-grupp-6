@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
+
 namespace Spaceport
 {
     class Program
@@ -18,7 +19,7 @@ namespace Spaceport
             Styling.InfoPrint("Fetching SpacePorts from Database");
             Task<List<SpacePort>> spacePorts; 
             Styling.InfoPrint("Fetching SpaceShips from Database");
-            Task<List<SpaceShip>> spaceShips;
+            Task<List<SpaceShip>> spaceShips;//
 
             new VisualProgressBar().AwaitAndShow(new Task[] { spacePorts = GetSpacePortsAsync(), spaceShips = GetSpaceShipsAsync() }).Wait();
 
@@ -63,7 +64,7 @@ namespace Spaceport
             using var context = new SpacePortDBContext();
             var parkingSpots = context.ParkingSpots.Where(x => x.SpacePortID == choice.SpacePortID).ToList();
             var availableSpots = context.ParkingSessions.Where(x => x.SpacePortID == choice.SpacePortID).ForEachAsync(x => x.);
-            //result.ForEach(r => Console.WriteLine(choice.Name + " holds following parkingspots: " + r.ParkingSpotID));
+            result.ForEach(r => Console.WriteLine(choice.Name + " holds following parkingspots: " + r.ParkingSpotID));
             return true;
         }
 
