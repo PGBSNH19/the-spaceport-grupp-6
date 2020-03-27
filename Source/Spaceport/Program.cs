@@ -10,6 +10,7 @@ namespace Spaceport
     {
         static void Main(string[] args)
         {
+
             Console.ReadLine();
             //Styling.PrintSpaceParkASCIILogo();
 
@@ -29,11 +30,10 @@ namespace Spaceport
             var spaceShipChoice = GetSpaceShipChoice(personChoice);
             Styling.ConsolePrint($"SpaceShipID: {spaceShipChoice.SpaceShipID} is of length {spaceShipChoice.Length} spacemeteres and registered under {personChoice.Name}");
 
+            DisplaySpacePorts();
             var stationChoice = GetSpacePortChoice();
-            
 
             var parkingSession = new ParkingSession().AtSpacePort(stationChoice);
-
 
             parkingSession.SetForShip(spaceShips.Result.Where(s => s.Driver.Name == "Luke Skywalker").First())
             .ValidateParkingRight()
@@ -45,6 +45,21 @@ namespace Spaceport
             Console.ReadLine();
         }
 
+        private static void DisplaySpacePorts()
+        {
+            Styling.ConsolePrint("\nExisting spaceports:");
+
+            using var context = new SpacePortDBContext();
+            var spaceports = context.SpacePorts;
+
+            foreach (SpacePort spaceport in spaceports)
+            {
+                Styling.ConsolePrint("\nID: " + spaceport.SpacePortID + " Name: " + spaceport.Name
+                    + " Has available parking spots: " + (spaceport.HasAvailableParkingspots() ? "Yes" : "No"));
+            }
+
+        }
+
         private static SpaceShip GetSpaceShipChoice(Person driver)
         {
             if (SpaceShip.EntityExistsInDatabase(driver))
@@ -53,7 +68,6 @@ namespace Spaceport
             }
             else
             {
-
                 Styling.ConsolePrint("\nNo ships matching under your name.");
                 string length = String.Empty;
                 while (int.TryParse(length, out int result) == false)
@@ -91,7 +105,7 @@ namespace Spaceport
                 Styling.ConsolePrint("\nWhich of our stations would do like to park at?");
                 choice = SpacePortExists(Console.ReadLine());
             }
-            if (SpacePort.SpacePortIsFull(choice))
+            if (choice.HasAvailableParkingspots())
             {
                 // Do something here?
             }

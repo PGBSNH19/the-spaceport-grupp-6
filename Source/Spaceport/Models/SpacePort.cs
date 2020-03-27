@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
@@ -23,11 +24,11 @@ namespace Spaceport
             return (result.Count() == 0) ? null : result.First();
         }
 
-        public static bool SpacePortIsFull(SpacePort choice)
+        public bool HasAvailableParkingspots()
         {
             using var context = new SpacePortDBContext();
-            var occupiedSpots = context.ParkingSessions.Where(x => !x.Invoice.Paid && x.ParkingSpot.SpacePortID == choice.SpacePortID).Select(x => x.ParkingSpot).ToList();
-            var parkingSpots = context.ParkingSpots.Where(x => x.SpacePortID == choice.SpacePortID).ToList();
+            var occupiedSpots = context.ParkingSessions.Where(x => !x.Invoice.Paid && x.ParkingSpot.SpacePortID == SpacePortID).Select(x => x.ParkingSpot).ToList();
+            var parkingSpots = context.ParkingSpots.Where(x => x.SpacePortID == SpacePortID).ToList();
 
             foreach (ParkingSpot occupiedSpot in occupiedSpots)
             {
