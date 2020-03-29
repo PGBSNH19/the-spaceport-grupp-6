@@ -30,12 +30,12 @@ namespace Spaceport.Models
         [NotMapped]
         public ParkingSpot ParkingSpot { get; set; }
 
-        private const int BASE_COST_PER_MINUTE = 10;
+        public const int BASE_COST_PER_MINUTE = 10;
 
-        public void Pay()
+        public void Pay(DateTime timePaid)
         {
             EndTime = DateTime.Now;
-            TimeSpan timeDifference = EndTime - RegistrationTime;
+            TimeSpan timeDifference = timePaid - RegistrationTime;
             int amountToPay = (timeDifference.Minutes * BASE_COST_PER_MINUTE) + BASE_COST_PER_MINUTE;
             AmountPaid = amountToPay;
             Console.WriteLine($"Deposited {AmountPaid} imperial credits - Invoice #{InvoiceID} paid.");

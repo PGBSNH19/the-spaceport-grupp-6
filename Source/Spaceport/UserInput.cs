@@ -111,7 +111,7 @@ namespace Spaceport
                 else if (userInput.ToLower() == "y")
                 {
                     ParkingSpot.FreeSpotByID(invoice.ParkingSpotID);
-                    invoice.Pay();
+                    invoice.Pay(DateTime.Now);
                     return;
                 }
             }

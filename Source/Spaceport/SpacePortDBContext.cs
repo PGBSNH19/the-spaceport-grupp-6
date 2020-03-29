@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Spaceport
 {
-    class SpacePortDBContext : DbContext
+    public class SpacePortDBContext : DbContext
     {
         public DbSet<Person> Persons { get; set; }
         public DbSet<ParkingSpot> ParkingSpots { get; set; }
