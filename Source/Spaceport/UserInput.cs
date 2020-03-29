@@ -66,11 +66,15 @@ namespace Spaceport
             Styling.ConsolePrint("\nEnter ID of the SpacePort you would do like to park at: ");
             var spacePort = SpacePortExists(int.Parse(Console.ReadLine()));
 
-            while (spacePort == null || !spacePort.HasAvailableParkingspots())
+            while (spacePort == null || !spacePort.HasAvailableParkingspots() || spacePort.FindFreeParkingSpot(SpaceShip).Count() == 0)
             {
                 if(spacePort == null)
                 {
                     Styling.ConsolePrint("Sorry that SpacePort doesn't exist.");
+                }
+                else if (spacePort.FindFreeParkingSpot(SpaceShip).Count() == 0)
+                {
+                    Styling.ConsolePrint($"{"\nNo suitable parking spot found to support ship length."}");
                 }
                 else
                 {
@@ -90,7 +94,7 @@ namespace Spaceport
             return (result.Count() == 0) ? null : result.First();
         }
 
-        internal void CheckForUnpaidInvoice()
+        private void CheckForUnpaidInvoice()
         {
             Invoice invoice = Invoice.UnpaidInvoiceFromPerson(Person);
             while (invoice != null)
@@ -113,7 +117,7 @@ namespace Spaceport
             }
         }
 
-        internal void DisplaySpacePorts()
+        private void DisplaySpacePorts()
         {
             Styling.ConsolePrint("\nExisting spaceports:");
 

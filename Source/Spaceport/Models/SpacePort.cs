@@ -23,7 +23,7 @@ namespace Spaceport
             return result;
         }
 
-        public bool HasAvailableParkingspots()
+        internal bool HasAvailableParkingspots()
         {
             using var context = new SpacePortDBContext();
             var parkingSpots = context.ParkingSpots.Where(x => x.SpacePortID == SpacePortID && x.Occupied == false);

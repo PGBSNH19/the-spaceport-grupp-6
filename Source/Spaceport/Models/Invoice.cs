@@ -12,7 +12,16 @@ namespace Spaceport.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int InvoiceID { get; set; }
         public bool Paid { get; set; }
-        public int AmountPaid { get; set; }
+        private int _amountPaid;
+        public int AmountPaid { 
+            get => _amountPaid;
+            set {
+                if (value < 1)
+                    _amountPaid = 1;
+                else
+                    _amountPaid = value;
+            } 
+        }
         public int PersonID { get; set; }
         public Person Person  { get; set; }
         public DateTime RegistrationTime { get; set; }
@@ -21,13 +30,13 @@ namespace Spaceport.Models
         [NotMapped]
         public ParkingSpot ParkingSpot { get; set; }
 
-        private const int COST_PER_HOUR = 10;
+        private const int BASE_COST_PER_MINUTE = 10;
 
         public void Pay()
         {
             EndTime = DateTime.Now;
             TimeSpan timeDifference = EndTime - RegistrationTime;
-            int amountToPay = timeDifference.Minutes * COST_PER_HOUR;
+            int amountToPay = (timeDifference.Minutes * BASE_COST_PER_MINUTE) + BASE_COST_PER_MINUTE;
             AmountPaid = amountToPay;
             Console.WriteLine($"Deposited {AmountPaid} imperial credits - Invoice #{InvoiceID} paid.");
             Paid = true;
