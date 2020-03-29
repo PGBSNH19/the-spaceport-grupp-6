@@ -19,15 +19,18 @@ namespace Spaceport
 
                 Styling.ConsolePrint("\nWelcome to SpacePark!");
 
-                var userInput = new UserInput().GetPersonChoice().GetSpaceShipChoice().GetSpacePortChoice();
+                var userInput = new UserInput()
+                    .GetPersonChoice()
+                    .GetSpaceShipChoice()
+                    .GetSpacePortChoice();
 
                 new ParkingSession()
-                .AtSpacePort(userInput.SpacePort)
-                .SetForShip(userInput.SpaceShip)
-                .ValidateParkingRight(userInput.Person)
-                .FindFreeSpot()
-                .CreateInvoice()
-                .StartParkingSession();
+                    .AtSpacePort(userInput.SpacePort)
+                    .SetForShip(userInput.SpaceShip)
+                    .ValidateParkingRight(userInput.Person)
+                    .FindFreeSpot()
+                    .CreateInvoice()
+                    .StartParkingSession();
 
                 Console.ReadLine();
             }

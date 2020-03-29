@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Spaceport
 {
@@ -16,14 +17,22 @@ namespace Spaceport
         {
             Styling.ConsolePrint("Enter your SSN:");
             var ssn = Console.ReadLine();
-            if (!Person.EntityExistsInDatabase(ssn))
+            var personExistsTask = Task.Run(() => Person.EntityExistsInDatabase(ssn));
+            new VisualProgressBar().
+                AwaitAndShow(new Task[] { personExistsTask })
+                .Wait();
+            if (!personExistsTask.Result)
             {
                 Styling.ConsolePrint("Enter your full name: ");
                 var name = Console.ReadLine();
                 Person.AddEntityToDatabase(ssn, name);
             }
-            Person = Person.GetEntityFromDatabase(ssn);
-            Styling.ConsolePrint("Well met, " + Person.Name + ".");
+            var personFetchTask = Task.Run(() => Person.GetEntityFromDatabase(ssn));
+            new VisualProgressBar().
+                AwaitAndShow(new Task[] { personFetchTask })
+                .Wait();
+            Person = personFetchTask.Result;
+            Styling.ConsolePrint("\nWell met, " + Person.Name + ".");
             CheckForUnpaidInvoice();
             return this;
         }
@@ -55,11 +64,11 @@ namespace Spaceport
         {
             DisplaySpacePorts();
             Styling.ConsolePrint("\nEnter ID of the SpacePort you would do like to park at: ");
-            var choice = SpacePortExists(int.Parse(Console.ReadLine()));
+            var spacePort = SpacePortExists(int.Parse(Console.ReadLine()));
 
-            while (choice == null || !choice.HasAvailableParkingspots())
+            while (spacePort == null || !spacePort.HasAvailableParkingspots())
             {
-                if(choice == null)
+                if(spacePort == null)
                 {
                     Styling.ConsolePrint("Sorry that SpacePort doesn't exist.");
                 }
@@ -68,20 +77,20 @@ namespace Spaceport
                     Styling.ConsolePrint("Sorry that SpacePort is closed due to no available spots.");
                 }
                 Styling.ConsolePrint("\nWhich of our SpacePorts would do like to park at?");
-                choice = SpacePortExists(int.Parse(Console.ReadLine()));
+                spacePort = SpacePortExists(int.Parse(Console.ReadLine()));
             }
-            SpacePort = choice;
+            SpacePort = spacePort;
             return this;
         }
 
-        public SpacePort SpacePortExists(int choice)
+        public SpacePort SpacePortExists(int spacePortID)
         {
             using var context = new SpacePortDBContext();
-            var result = context.SpacePorts.Where(x => x.SpacePortID == choice);
+            var result = context.SpacePorts.Where(x => x.SpacePortID == spacePortID);
             return (result.Count() == 0) ? null : result.First();
         }
 
-        private void CheckForUnpaidInvoice()
+        internal void CheckForUnpaidInvoice()
         {
             Invoice invoice = Invoice.UnpaidInvoiceFromPerson(Person);
             while (invoice != null)
@@ -104,7 +113,7 @@ namespace Spaceport
             }
         }
 
-        private void DisplaySpacePorts()
+        internal void DisplaySpacePorts()
         {
             Styling.ConsolePrint("\nExisting spaceports:");
 
@@ -118,6 +127,5 @@ namespace Spaceport
                     $"\tStatus:  {(spaceport.HasAvailableParkingspots() ? "Available Parkingspots" : "Closed")}",0);
             }
         }
-        
     }
 }

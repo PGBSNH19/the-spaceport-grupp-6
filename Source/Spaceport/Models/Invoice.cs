@@ -16,17 +16,20 @@ namespace Spaceport.Models
         public int PersonID { get; set; }
         public Person Person  { get; set; }
         public DateTime RegistrationTime { get; set; }
+        public DateTime EndTime { get; set; }
         public int ParkingSpotID { get; set; }
         [NotMapped]
         public ParkingSpot ParkingSpot { get; set; }
 
-        private const int COST_PER_HOUR = 1000;
+        private const int COST_PER_HOUR = 10;
 
         public void Pay()
         {
-            TimeSpan timeDifference = DateTime.Now - RegistrationTime;
-            int amountToPay = timeDifference.Seconds * ((COST_PER_HOUR /60)/60);
+            EndTime = DateTime.Now;
+            TimeSpan timeDifference = EndTime - RegistrationTime;
+            int amountToPay = timeDifference.Minutes * COST_PER_HOUR;
             AmountPaid = amountToPay;
+            Console.WriteLine($"Deposited {AmountPaid} imperial credits - Invoice #{InvoiceID} paid.");
             Paid = true;
             UpdateEntityInDatabase();
         }
