@@ -23,7 +23,7 @@ namespace Spaceport
                 .Wait();
             if (!personExistsTask.Result)
             {
-                Styling.ConsolePrint("Enter your full name: ");
+                Styling.ConsolePrint("\nEnter your full name: ");
                 var name = Console.ReadLine();
                 Person.AddEntityToDatabase(ssn, name);
             }

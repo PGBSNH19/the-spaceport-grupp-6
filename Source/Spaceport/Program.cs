@@ -15,7 +15,7 @@ namespace Spaceport
             while(true)
             {
                 Console.Clear();
-                Styling.PrintSpaceParkASCIILogo();
+                //Styling.PrintSpaceParkASCIILogo();
 
                 Styling.ConsolePrint("\nWelcome to SpacePark!");
 
