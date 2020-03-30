@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Spaceport.Models;
+using System.IO;
 
 namespace Spaceport
 {
-    class SpacePortDBContext : DbContext
+    public class SpacePortDBContext : DbContext
     {
         public DbSet<Person> Persons { get; set; }
         public DbSet<ParkingSpot> ParkingSpots { get; set; }
@@ -14,17 +16,17 @@ namespace Spaceport
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) 
         {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
             optionsBuilder.EnableSensitiveDataLogging(true);
-            optionsBuilder.UseSqlServer(Program.CONNECTION_STRING);
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Person>().HasData(
-            //    new Person(
-            //    )
-            //);
-                
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -1,10 +1,8 @@
-﻿using Microsoft.Data.SqlClient;
-using Spaceport.Models;
+﻿using Spaceport.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
-using System.Threading;
+using System.Linq;
 
 namespace Spaceport
 {
@@ -14,49 +12,56 @@ namespace Spaceport
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ParkingSessionID { get; set; }
-        [Required]
         public ParkingSpot ParkingSpot { get; set; }
-        [Required]
+        public int ParkingSpotID { get; set; }
         public virtual SpaceShip SpaceShip { get; set; }
-        [Required]
+        public int SpaceShipID { get; set; }
         public bool ParkingToken { get; set; }
-        [Required]
-        public DateTime RegistrationTime { get; set; }
         [NotMapped]
         public SpacePort SpacePort { get; set; }
-        [Required]
+        public int SpacePortID { get; set; }
         public Invoice Invoice { get; set; }
-
-        public ParkingSession()
-        {
-            Styling.ComputerPrint("\nWelcome to SpacePark!\nWhich of our stations would do like to park at?");
-        }
+        public int InvoiceID { get; set; }
 
         public ParkingSession AtSpacePort(SpacePort port)
         {
             SpacePort = port;
-            Styling.ComputerPrint($"\nThank you for choosing SpacePort {SpacePort.Name}.\nWe need some information about your ship.");
+            Styling.ConsolePrint($"Thank you for choosing SpacePort {SpacePort.Name}.");
+            return this;
+        }
+
+        public ParkingSession CreateInvoice()
+        {
+            Invoice = new Invoice()
+            {
+                Paid = false,
+                PersonID = SpaceShip.DriverPersonID,
+                RegistrationTime = DateTime.Now,
+                ParkingSpotID = ParkingSpotID
+            };
+            Styling.ConsolePrint("\nInvoice created.");
+            Invoice.AddEntityToDatabase();
             return this;
         }
 
         public ParkingSession SetForShip(SpaceShip ship)
         {
             SpaceShip = ship;
-            Styling.ComputerPrint("\nYour ship has been registered.");
             return this;
         }
 
-        public ParkingSession ValidateParkingRight()
+        public ParkingSession ValidateParkingRight(Person driver)
         {
-            Styling.ComputerPrint("\nSpacePark is an exclusive SpacePort.\nWe need to run a background check on you.");
+            SpaceShip.Driver = driver;
+            Styling.ConsolePrint("\nSpacePark is an exclusive SpacePort.\nWe need to run a background check on you.");
             ParkingToken = this.SpaceShip.Driver.IsPartOfStarwars();
             if (ParkingToken)
             {
-                Styling.ComputerPrint($"\n{SpaceShip.Driver.Name}, what a pleasure!\nYou have been given an access token to park.");
+                Styling.ConsolePrint($"\n{SpaceShip.Driver.Name}, what a pleasure!\nYou have been given an access token to park.");
             }
             else
             {
-                Styling.ComputerPrint($"\n{SpaceShip.Driver.Name} sorry SpacePark cannot let you park.");
+                Styling.ConsolePrint($"\n{SpaceShip.Driver.Name} sorry SpacePark cannot let you park.");
                 Console.ReadLine();
                 Environment.Exit(0);
             }
@@ -65,21 +70,40 @@ namespace Spaceport
 
         public ParkingSession FindFreeSpot()
         {
-            ParkingSpot = SpacePort.FindFreeParkingSpot(SpacePort, SpaceShip);
-            if (ParkingSpot == null)
+            var parkingSpot = SpacePort.FindFreeParkingSpot(SpaceShip);
+            if (parkingSpot.Count() <= 0)
             {
-                Styling.ComputerPrint($"{"\nNo suitable parking spot found."}");
+                Styling.ConsolePrint($"{"\nNo suitable parking spot found to support ship length."}");
                 Console.ReadLine();
                 Environment.Exit(0);
-
             }
+            ParkingSpot = parkingSpot.First();
+            ParkingSpot.Occupied = true;
+            ParkingSpotID = ParkingSpot.ParkingSpotID;
+            ParkingSpot.UpdateEntityInDatabase();
             return this;
         }
 
         public ParkingSession StartParkingSession()
         {
-            Console.WriteLine("\nParking session started");
+            AddEntityToDatabase();
+            Styling.ConsolePrint("\nParking session started");
             return this;
+        }
+
+        internal void AddEntityToDatabase()
+        {
+            using var context = new SpacePortDBContext();
+            var session = new ParkingSession()
+            {
+                ParkingToken = this.ParkingToken,
+                ParkingSpotID = ParkingSpot.ParkingSpotID,
+                SpaceShipID = SpaceShip.SpaceShipID,
+                SpacePortID = this.SpacePort.SpacePortID,
+                InvoiceID = this.Invoice.InvoiceID
+            };
+            context.ParkingSessions.Add(session);
+            context.SaveChanges();
         }
     }
 }

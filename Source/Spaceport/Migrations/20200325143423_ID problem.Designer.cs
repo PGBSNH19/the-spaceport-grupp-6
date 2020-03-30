@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Spaceport;
 
 namespace Spaceport.Migrations
 {
     [DbContext(typeof(SpacePortDBContext))]
-    partial class SpacePortDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200325143423_ID problem")]
+    partial class IDproblem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,24 +31,10 @@ namespace Spaceport.Migrations
                     b.Property<int>("AmountPaid")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("Paid")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ParkingSpotID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PersonID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RegistrationTime")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("InvoiceID");
-
-                    b.HasIndex("PersonID");
 
                     b.ToTable("Invoices");
                 });
@@ -66,6 +54,9 @@ namespace Spaceport.Migrations
 
                     b.Property<bool>("ParkingToken")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("RegistrationTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("SpacePortID")
                         .HasColumnType("int");
@@ -97,7 +88,7 @@ namespace Spaceport.Migrations
                     b.Property<bool>("Occupied")
                         .HasColumnType("bit");
 
-                    b.Property<int>("SpacePortID")
+                    b.Property<int?>("SpacePortID")
                         .HasColumnType("int");
 
                     b.HasKey("ParkingSpotID");
@@ -115,11 +106,6 @@ namespace Spaceport.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("SSN")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
@@ -153,7 +139,6 @@ namespace Spaceport.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("DriverPersonID")
-                        .HasColumnName("DriverPersonID")
                         .HasColumnType("int");
 
                     b.Property<int>("Length")
@@ -161,16 +146,9 @@ namespace Spaceport.Migrations
 
                     b.HasKey("SpaceShipID");
 
-                    b.ToTable("SpaceShips");
-                });
+                    b.HasIndex("DriverPersonID");
 
-            modelBuilder.Entity("Spaceport.Models.Invoice", b =>
-                {
-                    b.HasOne("Spaceport.Person", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.ToTable("SpaceShips");
                 });
 
             modelBuilder.Entity("Spaceport.ParkingSession", b =>
@@ -198,7 +176,14 @@ namespace Spaceport.Migrations
                 {
                     b.HasOne("Spaceport.SpacePort", "SpacePort")
                         .WithMany()
-                        .HasForeignKey("SpacePortID")
+                        .HasForeignKey("SpacePortID");
+                });
+
+            modelBuilder.Entity("Spaceport.SpaceShip", b =>
+                {
+                    b.HasOne("Spaceport.Person", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverPersonID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

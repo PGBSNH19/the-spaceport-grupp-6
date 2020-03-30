@@ -8,7 +8,7 @@ namespace Spaceport
 {
     public class Styling
     {
-        public static void InfoPrint(string s, int milliSeconds = 0)
+        public static void InfoPrint(string s, int milliSeconds = 500)
         {
             for (int i = 0; i < s.Length; i++)
             {
@@ -19,7 +19,7 @@ namespace Spaceport
             Thread.Sleep(milliSeconds);
         }
 
-        public static void ComputerPrint(string s, int milliSeconds = 2000)
+        public static void ConsolePrint(string s, int milliSeconds = 1000)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             for (int i = 0; i < s.Length; i++)
@@ -32,33 +32,51 @@ namespace Spaceport
             Thread.Sleep(milliSeconds);
         }
 
-        public static void WelcomeToSpacePark()
+        public static void PrintSpaceParkASCIILogo()
         {
             Console.Clear();
             Thread.Sleep(1000);
+
             var logo = File.ReadAllLines("spacepark_logo.txt");
+            List<string> textArt = LogoParseToList(logo);
+            char[,] letters = LogoToCharArray(textArt);
 
-            List<string> textArt = new List<string>();
+            // Render
+            RenderAtRandom(textArt, letters, true);
+            Thread.Sleep(250);
+            // Reverse Render
+            RenderAtRandom(textArt, letters, false);
+            Thread.Sleep(250);
 
+            RenderTopDown(logo);
+
+            Thread.Sleep(1000);
+        }
+
+        internal static List<string> LogoParseToList(string[] logo)
+        {
+            List<string> list = new List<string>();
             for (int i = 0; i < logo.Length; i++)
-            {
-                textArt.Add(logo[i]);
-            }
+                list.Add(logo[i]);
+            return list;
+        }
 
+        internal static char[,] LogoToCharArray(List<string> textArt)
+        {
             char[,] letters = new char[textArt.Count, 102];
             for (int y = 0; y < textArt.Count; y++)
             {
                 char[] let = textArt[y].ToCharArray();
-
                 for (int x = 0; x < let.Length; x++)
-                {
                     letters[y, x] = (char)let.GetValue(x);
-                }
             }
+            return letters;
+        }
 
+        internal static void RenderAtRandom(List<string> textArt, char[,] letters, bool renderIn)
+        {
             Random r = new Random();
-            List<string> discard = new List<string>();
-
+            Console.ForegroundColor = ConsoleColor.Green;
             foreach (int y in Enumerable.Range(0, textArt.Count - 1).OrderBy(x => r.Next()))
             {
                 Console.CursorTop = y;
@@ -67,40 +85,22 @@ namespace Spaceport
                     Console.CursorLeft = x;
                     if (letters[y, x] != ' ')
                     {
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.Write(letters[y, x]);
-                        Thread.Sleep(2);
+                        Console.Write((renderIn) ? letters[y, x] : ' ');
+                        Thread.Sleep(4);
                     }
                 }
             }
+        }
 
-            Thread.Sleep(500);
-
-            foreach (int y in Enumerable.Range(0, textArt.Count - 1).OrderBy(x => r.Next()))
-            {
-                Console.CursorTop = y;
-                foreach (int x in Enumerable.Range(0, textArt[y].Length - 1).OrderBy(x => r.Next()))
-                {
-                    Console.CursorLeft = x;
-                    if (letters[y, x] != ' ')
-                    {
-                        Console.Write(" ");
-                        Thread.Sleep(2);
-                    }
-                }
-            }
-
+        internal static void RenderTopDown(string[] logo)
+        {
             Console.SetCursorPosition(0, 0);
-
             foreach (string line in logo)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(line);
-                Thread.Sleep(50);
+                Thread.Sleep(40);
             }
-
             Console.ForegroundColor = ConsoleColor.White;
-            Thread.Sleep(1000);
         }
     }
 }

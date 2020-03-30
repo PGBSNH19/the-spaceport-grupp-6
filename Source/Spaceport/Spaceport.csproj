@@ -30,6 +30,12 @@
     <Compile Remove="Migrations\20200325084412_Invoice_added.Designer.cs" />
     <Compile Remove="Migrations\20200325084626_Invoice_added.cs" />
     <Compile Remove="Migrations\20200325084626_Invoice_added.Designer.cs" />
+    <Compile Remove="Migrations\20200327122256_AddedDriverIDToSpaceShip.cs" />
+    <Compile Remove="Migrations\20200327122256_AddedDriverIDToSpaceShip.Designer.cs" />
+    <Compile Remove="Migrations\20200327122448_AddedDriverIDToSpaceShip.cs" />
+    <Compile Remove="Migrations\20200327122448_AddedDriverIDToSpaceShip.Designer.cs" />
+    <Compile Remove="Migrations\20200327122602_AddedDriverIDToSpaceShip.cs" />
+    <Compile Remove="Migrations\20200327122602_AddedDriverIDToSpaceShip.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,11 +50,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.3" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="RestSharp" Version="106.10.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="spacepark_logo.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

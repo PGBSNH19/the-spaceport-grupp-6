@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace Spaceport
 {
-    class VisualProgress
+    class VisualProgressBar
     {
-        private Timer t; 
+        private Timer t;
 
-        public void Show(Task[] task)
+        public async Task AwaitAndShow(Task[] task)
         {
-            t = new Timer(DataGetWorkVisual, null, 0, 200);
-            Task.WaitAll(task);
+            t = new Timer(DataWorkVisual, null, 0, 200);
+            await Task.WhenAll(task);
             t.Dispose();
         }
         
-        internal void DataGetWorkVisual(object state)
+        internal void DataWorkVisual(object state)
         {
             Console.Write(".");
         }
