@@ -1,0 +1,68 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20200321124610_SeedingData_SpacePortWithParkingSpots.cs" />
+    <Compile Remove="Migrations\20200321124610_SeedingData_SpacePortWithParkingSpots.Designer.cs" />
+    <Compile Remove="Migrations\20200321125603_Initial.cs" />
+    <Compile Remove="Migrations\20200321125603_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200321125916_Initial.cs" />
+    <Compile Remove="Migrations\20200321125916_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200323182617_Initial.cs" />
+    <Compile Remove="Migrations\20200323182617_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200323183148_Second.cs" />
+    <Compile Remove="Migrations\20200323183148_Second.Designer.cs" />
+    <Compile Remove="Migrations\20200323183507_Initial.cs" />
+    <Compile Remove="Migrations\20200323183507_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200323192613_Initial.cs" />
+    <Compile Remove="Migrations\20200323192613_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200323193850_SpacePortObjectInParkingSpot.cs" />
+    <Compile Remove="Migrations\20200323193850_SpacePortObjectInParkingSpot.Designer.cs" />
+    <Compile Remove="Migrations\20200323202915_Update.cs" />
+    <Compile Remove="Migrations\20200323202915_Update.Designer.cs" />
+    <Compile Remove="Migrations\20200323204810_Initial.cs" />
+    <Compile Remove="Migrations\20200323204810_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200325084412_Invoice_added.cs" />
+    <Compile Remove="Migrations\20200325084412_Invoice_added.Designer.cs" />
+    <Compile Remove="Migrations\20200325084626_Invoice_added.cs" />
+    <Compile Remove="Migrations\20200325084626_Invoice_added.Designer.cs" />
+    <Compile Remove="Migrations\20200327122256_AddedDriverIDToSpaceShip.cs" />
+    <Compile Remove="Migrations\20200327122256_AddedDriverIDToSpaceShip.Designer.cs" />
+    <Compile Remove="Migrations\20200327122448_AddedDriverIDToSpaceShip.cs" />
+    <Compile Remove="Migrations\20200327122448_AddedDriverIDToSpaceShip.Designer.cs" />
+    <Compile Remove="Migrations\20200327122602_AddedDriverIDToSpaceShip.cs" />
+    <Compile Remove="Migrations\20200327122602_AddedDriverIDToSpaceShip.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.4.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="RestSharp" Version="106.10.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="spacepark_logo.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
